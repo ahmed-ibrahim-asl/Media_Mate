@@ -39,8 +39,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   String get _email => _user?.email ?? '—';
   String get _displayName => _user?.displayName ?? '—';
 
-  String _roleCollection(String role) =>
-      role == 'doctor' ? 'doctors' : 'patients';
+  String _roleCollection(String role) => role == 'doctor' ? 'doctors' : 'patients';
 
   @override
   void initState() {
@@ -56,9 +55,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
       final appState = context.read<AppState>();
 
       // Always read /users first to discover role if app state doesn't have it
-      final usersRef = FirebaseFirestore.instance
-          .collection('users')
-          .doc(u.uid);
+      final usersRef = FirebaseFirestore.instance.collection('users').doc(u.uid);
       final userSnap = await usersRef.get();
       final userData = userSnap.data();
 
@@ -71,11 +68,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
       Map<String, dynamic>? roleData;
       if (role.isNotEmpty) {
-        final roleSnap =
-            await FirebaseFirestore.instance
-                .collection(_roleCollection(role))
-                .doc(u.uid)
-                .get();
+        final roleSnap = await FirebaseFirestore.instance
+            .collection(_roleCollection(role))
+            .doc(u.uid)
+            .get();
         roleData = roleSnap.data();
       }
 
@@ -132,14 +128,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
       if (bytes.isEmpty) return;
 
       final mime = lookupMimeType(x.name, headerBytes: bytes) ?? 'image/jpeg';
-      final ext =
-          mime == 'image/png'
-              ? 'png'
-              : mime == 'image/webp'
+      final ext = mime == 'image/png'
+          ? 'png'
+          : mime == 'image/webp'
               ? 'webp'
               : (mime == 'image/heic' || mime == 'image/heif')
-              ? 'heic'
-              : 'jpg';
+                  ? 'heic'
+                  : 'jpg';
 
       setState(() => _busy = true);
 
@@ -189,11 +184,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
         return Theme(
           data: base.copyWith(
             textTheme: GoogleFonts.interTextTheme(base.textTheme),
-            dialogTheme: const DialogTheme(
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.all(Radius.circular(16)),
-              ),
-            ),
             textButtonTheme: TextButtonThemeData(
               style: TextButton.styleFrom(
                 foregroundColor: _blue,
@@ -253,6 +243,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
             ),
           ),
           child: AlertDialog(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(16),
+            ),
             titlePadding: const EdgeInsets.fromLTRB(20, 18, 20, 0),
             contentPadding: const EdgeInsets.fromLTRB(20, 12, 20, 0),
             actionsPadding: const EdgeInsets.fromLTRB(16, 10, 16, 12),
@@ -271,9 +264,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 keyboardType: keyboardType,
                 autofocus: true,
                 textInputAction:
-                    isMultiline
-                        ? TextInputAction.newline
-                        : TextInputAction.done,
+                    isMultiline ? TextInputAction.newline : TextInputAction.done,
                 minLines: isMultiline ? 3 : 1,
                 maxLines: isMultiline ? 4 : 1,
                 style: GoogleFonts.inter(fontSize: 16),
@@ -326,11 +317,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
           data: base.copyWith(
             colorScheme: scheme,
             textTheme: GoogleFonts.interTextTheme(base.textTheme),
-            dialogTheme: const DialogTheme(
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.all(Radius.circular(16)),
-              ),
-            ),
             textButtonTheme: TextButtonThemeData(
               style: TextButton.styleFrom(
                 foregroundColor: const Color(0xFF1766B9),
@@ -352,15 +338,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     ),
                     decoration: BoxDecoration(
                       color:
-                          selected
-                              ? const Color(0x141766B9) // subtle fill on select
-                              : Colors.white,
+                          selected ? const Color(0x141766B9) : Colors.white,
                       borderRadius: BorderRadius.circular(12),
                       border: Border.all(
-                        color:
-                            selected
-                                ? const Color(0xFF1766B9)
-                                : const Color(0xFFE5E7EB),
+                        color: selected
+                            ? const Color(0xFF1766B9)
+                            : const Color(0xFFE5E7EB),
                         width: 1.5,
                       ),
                     ),
@@ -368,10 +351,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       children: [
                         Icon(
                           icon,
-                          color:
-                              selected
-                                  ? const Color(0xFF1766B9)
-                                  : const Color(0xFF9AA3AF),
+                          color: selected
+                              ? const Color(0xFF1766B9)
+                              : const Color(0xFF9AA3AF),
                         ),
                         const SizedBox(width: 10),
                         Expanded(
@@ -384,7 +366,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             ),
                           ),
                         ),
-                        // custom radio indicator (to match app style)
+                        // custom radio indicator (matching app style)
                         AnimatedContainer(
                           duration: const Duration(milliseconds: 180),
                           width: 20,
@@ -392,10 +374,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           decoration: BoxDecoration(
                             shape: BoxShape.circle,
                             border: Border.all(
-                              color:
-                                  selected
-                                      ? const Color(0xFF1766B9)
-                                      : const Color(0xFF9AA3AF),
+                              color: selected
+                                  ? const Color(0xFF1766B9)
+                                  : const Color(0xFF9AA3AF),
                               width: 2,
                             ),
                           ),
@@ -404,10 +385,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             margin: const EdgeInsets.all(3),
                             decoration: BoxDecoration(
                               shape: BoxShape.circle,
-                              color:
-                                  selected
-                                      ? const Color(0xFF1766B9)
-                                      : Colors.transparent,
+                              color: selected
+                                  ? const Color(0xFF1766B9)
+                                  : Colors.transparent,
                             ),
                           ),
                         ),
@@ -418,6 +398,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
               }
 
               return AlertDialog(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(16),
+                ),
                 titlePadding: const EdgeInsets.fromLTRB(20, 18, 20, 0),
                 contentPadding: const EdgeInsets.fromLTRB(20, 12, 20, 0),
                 actionsPadding: const EdgeInsets.fromLTRB(16, 0, 16, 12),
@@ -435,7 +418,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     genderTile('Male', Icons.male_rounded),
                     const SizedBox(height: 10),
                     genderTile('Female', Icons.female_rounded),
-                    SizedBox(height: 10),
+                    const SizedBox(height: 10),
                   ],
                 ),
                 actions: [
@@ -455,9 +438,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     onPressed: () async {
                       Navigator.pop(ctx);
                       final gender =
-                          (temp == 'Male' || temp == 'Female')
-                              ? temp
-                              : 'Female';
+                          (temp == 'Male' || temp == 'Female') ? temp : 'Female';
                       await _updateUsers({'gender': gender});
                       await _updateRole({'gender': gender});
                       _snack('Gender updated');
@@ -475,12 +456,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   Future<void> _editAgeViaDob() async {
     // derive age from DOB; let user pick DOB
-    final ts =
-        (_roleDoc?['date_of_birth'] ??
-                _roleDoc?['dob'] ??
-                _userDoc?['date_of_birth'] ??
-                _userDoc?['dob'])
-            as Timestamp?;
+    final ts = (_roleDoc?['date_of_birth'] ??
+            _roleDoc?['dob'] ??
+            _userDoc?['date_of_birth'] ??
+            _userDoc?['dob']) as Timestamp?;
 
     final now = DateTime.now();
     final initial =
@@ -510,11 +489,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
           data: base.copyWith(
             colorScheme: scheme,
             textTheme: GoogleFonts.interTextTheme(base.textTheme),
-            dialogTheme: const DialogTheme(
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.all(Radius.circular(16)),
-              ),
-            ),
             textButtonTheme: TextButtonThemeData(
               style: TextButton.styleFrom(
                 foregroundColor: const Color(0xFF1766B9),
@@ -528,28 +502,26 @@ class _ProfileScreenState extends State<ProfileScreen> {
               headerBackgroundColor: const Color(0xFF1766B9),
               headerForegroundColor: Colors.white,
 
-              // --- WidgetStateProperty versions (fixes your error) ---
-              dayShape: const WidgetStatePropertyAll(CircleBorder()),
-              dayForegroundColor: WidgetStateProperty.resolveWith((states) {
-                return states.contains(WidgetState.selected)
+              // Use MaterialStateProperty for wider compatibility
+              dayShape: MaterialStatePropertyAll(const CircleBorder()),
+              dayForegroundColor: MaterialStateProperty.resolveWith((states) {
+                return states.contains(MaterialState.selected)
                     ? Colors.white
                     : const Color(0xFF222B32);
               }),
-              dayBackgroundColor: WidgetStateProperty.resolveWith((states) {
-                if (states.contains(WidgetState.selected)) {
+              dayBackgroundColor: MaterialStateProperty.resolveWith((states) {
+                if (states.contains(MaterialState.selected)) {
                   return const Color(0xFF1766B9);
                 }
-                if (states.contains(WidgetState.hovered)) {
+                if (states.contains(MaterialState.hovered)) {
                   return const Color(0x141766B9); // subtle hover
                 }
                 return Colors.transparent;
               }),
-              todayForegroundColor: const WidgetStatePropertyAll(
-                Color(0xFF1766B9),
-              ),
-              todayBackgroundColor: const WidgetStatePropertyAll(
-                Color(0x1A1766B9),
-              ),
+              todayForegroundColor:
+                  const MaterialStatePropertyAll(Color(0xFF1766B9)),
+              todayBackgroundColor:
+                  const MaterialStatePropertyAll(Color(0x1A1766B9)),
             ),
           ),
           child: child!,
@@ -566,9 +538,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   // ---------------- Assign caregiver/doctor ----------------
   Future<void> _chooseDoctor() async {
-    final result = await Navigator.of(
-      context,
-    ).pushNamed(SearchingForDoctorScreenWidget.routePath);
+    final result =
+        await Navigator.of(context).pushNamed(SearchingForDoctorScreenWidget.routePath);
     if (!mounted) return;
 
     if (result is Map) {
@@ -610,16 +581,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
     } finally {
       if (mounted) {
         context.read<AppState>().userType = '';
-        Navigator.of(
-          context,
-        ).pushNamedAndRemoveUntil('/selectUserScreen', (r) => false);
+        Navigator.of(context).pushNamedAndRemoveUntil('/selectUserScreen', (r) => false);
       }
     }
   }
 
   Future<void> _deleteAccount() async {
-    final ok =
-        await showDialog<bool>(
+    final ok = await showDialog<bool>(
           context: context,
           builder: (_) => _DeactivateDialog(blue: _blue, orange: _orange),
         ) ??
@@ -628,10 +596,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
     try {
       setState(() => _busy = true);
-      final role =
-          (context.read<AppState>().userType.isNotEmpty)
-              ? context.read<AppState>().userType
-              : ((_userDoc?['user_type'] as String?) ?? '');
+      final role = (context.read<AppState>().userType.isNotEmpty)
+          ? context.read<AppState>().userType
+          : ((_userDoc?['user_type'] as String?) ?? '');
 
       // Firestore best-effort cleanup
       if (role.isNotEmpty) {
@@ -649,8 +616,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
       // Storage cleanup
       try {
-        final list =
-            await FirebaseStorage.instance.ref('users/$_uid/').listAll();
+        final list = await FirebaseStorage.instance.ref('users/$_uid/').listAll();
         for (final f in list.items) {
           await f.delete().catchError((_) {});
         }
@@ -672,9 +638,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
       if (!mounted) return;
       context.read<AppState>().userType = '';
-      Navigator.of(
-        context,
-      ).pushNamedAndRemoveUntil('/selectUserScreen', (r) => false);
+      Navigator.of(context).pushNamedAndRemoveUntil('/selectUserScreen', (r) => false);
     } on FirebaseAuthException catch (e) {
       if (e.code == 'requires-recent-login') {
         _snack('Please sign out, sign in again, then retry account deletion.');
@@ -690,17 +654,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   // ---------------- Helpers ----------------
   String _ageText() {
-    final ts =
-        (_roleDoc?['date_of_birth'] ??
-                _roleDoc?['dob'] ??
-                _userDoc?['date_of_birth'] ??
-                _userDoc?['dob'])
-            as Timestamp?;
+    final ts = (_roleDoc?['date_of_birth'] ??
+            _roleDoc?['dob'] ??
+            _userDoc?['date_of_birth'] ??
+            _userDoc?['dob']) as Timestamp?;
     if (ts == null) return 'N/A';
     final dob = ts.toDate();
     var age = DateTime.now().year - dob.year;
-    final hadBirthday =
-        (DateTime.now().month > dob.month) ||
+    final hadBirthday = (DateTime.now().month > dob.month) ||
         (DateTime.now().month == dob.month && DateTime.now().day >= dob.day);
     if (!hadBirthday) age--;
     return '$age years old';
@@ -719,8 +680,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               const Text('You are signed out.'),
               const SizedBox(height: 12),
               ElevatedButton(
-                onPressed:
-                    () => Navigator.of(context).pushNamed('/signInScreen'),
+                onPressed: () => Navigator.of(context).pushNamed('/signInScreen'),
                 child: const Text('Sign in'),
               ),
             ],
@@ -757,14 +717,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         backgroundColor: const Color(0xFF3E3E3E),
                         backgroundImage:
                             photoUrl.isNotEmpty ? NetworkImage(photoUrl) : null,
-                        child:
-                            photoUrl.isEmpty
-                                ? const Icon(
-                                  Icons.person,
-                                  color: Colors.white,
-                                  size: 56,
-                                )
-                                : null,
+                        child: photoUrl.isEmpty
+                            ? const Icon(
+                                Icons.person,
+                                color: Colors.white,
+                                size: 56,
+                              )
+                            : null,
                       ),
                       IconButton.filledTonal(
                         onPressed: _busy ? null : _pickAndUploadAvatar,
@@ -791,8 +750,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     (role == 'doctor'
                         ? 'Doctor'
                         : role == 'patient'
-                        ? 'Patient'
-                        : '—'),
+                            ? 'Patient'
+                            : '—'),
                     style: GoogleFonts.inter(
                       color: const Color(0xFF979BA1),
                       fontSize: 14,
@@ -832,12 +791,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 if (role == 'patient') ...[
                   _Field(
                     label: 'Assigned Doctor',
-                    value:
-                        (((_roleDoc?['assigned_doctor_name'] as String?) ?? '')
+                    value: (((_roleDoc?['assigned_doctor_name'] as String?) ?? '')
                                 .trim()
                                 .isEmpty)
-                            ? 'N/A'
-                            : (_roleDoc?['assigned_doctor_name'] as String),
+                        ? 'N/A'
+                        : (_roleDoc?['assigned_doctor_name'] as String),
                   ),
                   const SizedBox(height: 18),
                   _OutlinedAction(
@@ -993,6 +951,9 @@ class _DeactivateDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(16),
+      ),
       title: const Text(
         'Are you sure you want\nto deactivate your\naccount ?',
         textAlign: TextAlign.center,
