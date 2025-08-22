@@ -10,6 +10,26 @@
     <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
 
+    <!-- ======= BLUETOOTH PERMISSIONS ======= -->
+    <!-- Android 12+ (SDK 31+) -->
+    <uses-permission
+        android:name="android.permission.BLUETOOTH_SCAN"
+        android:usesPermissionFlags="neverForLocation" />
+    <uses-permission android:name="android.permission.BLUETOOTH_CONNECT" />
+    <!-- <uses-permission android:name="android.permission.BLUETOOTH_ADVERTISE" /> -->
+    <!-- Only needed if your app advertises as a peripheral -->
+
+    <!-- Android 11 and below (SDK 30-) -->
+    <uses-permission android:name="android.permission.BLUETOOTH" />
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" />
+
+    <!-- Declare BLE capability (required for BLE scanning) -->
+    <uses-feature android:name="android.hardware.bluetooth_le" android:required="true" />
+    <!-- ===================================== -->
+
     <application
         android:name="${applicationName}"
         android:label="MediMate"

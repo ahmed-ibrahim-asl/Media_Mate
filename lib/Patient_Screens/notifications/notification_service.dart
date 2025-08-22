@@ -1,12 +1,19 @@
+//----------------------------- dart_core ------------------------------
 import 'dart:io';
 import 'dart:math';
+//----------------------------------------------------------------------
 
+//-------------------------- flutter_core ------------------------------
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
+//----------------------------------------------------------------------
+
+//-------------------------- flutter_packages --------------------------
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_timezone/flutter_timezone.dart';
 import 'package:timezone/data/latest_all.dart' as tz;
 import 'package:timezone/timezone.dart' as tz;
+//----------------------------------------------------------------------
 
 /// Singleton service that handles local notifications.
 class NotificationService {

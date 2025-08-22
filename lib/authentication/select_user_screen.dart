@@ -1,11 +1,16 @@
-// lib/select_user_screen.dart
-import 'dart:ui';
+//-------------------------- flutter_core ------------------------------
 import 'package:flutter/material.dart';
+//----------------------------------------------------------------------
+
+//-------------------------- flutter_packages --------------------------
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
+//----------------------------------------------------------------------
 
+//----------------------------- app_local ------------------------------
 import '/app_state.dart';
 import '/authentication/signIn_screen.dart'; // for SignInScreenWidget.routePath
+//----------------------------------------------------------------------
 
 class SelectUserScreenWidget extends StatefulWidget {
   const SelectUserScreenWidget({super.key});

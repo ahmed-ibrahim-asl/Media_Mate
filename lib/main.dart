@@ -1,44 +1,59 @@
-// lib/main.dart
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart'; // orientation lock
-import 'package:google_fonts/google_fonts.dart';
-import 'package:media_mate/Doctor_Screens/patient_info_screen.dart';
-import 'package:provider/provider.dart';
 
+//------------------------ third_part_packages -------------------------
+import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+//----------------------------------------------------------------------
 
+//--------------------------- common_shared ---------------------------
 import '/app_state.dart';
+import '/profile_screen.dart';
+import 'package:media_mate/theme/colors.dart';
+//----------------------------------------------------------------------
+
+//--------------------------- authentication ---------------------------
 import '/authentication/select_user_screen.dart';
 import '/authentication/signIn_screen.dart';
 import '/authentication/signUp_screen.dart';
-import '/profile_screen.dart';
+//----------------------------------------------------------------------
+
+//--------------------------- doctor_screens ---------------------------
+import '/Doctor_Screens/home_doctor_screen.dart';
+import '/Doctor_Screens/patient_info_screen.dart';
+import '/Doctor_Screens/tracking_medicine.dart';
+//----------------------------------------------------------------------
+
+//-------------------------- patient_screens ---------------------------
+import '/Patient_Screens/home_patient_screen.dart';
+import '/Patient_Screens/medcine_patient_screen.dart';
 import '/Patient_Screens/searching_for_doctor_screen.dart';
 import '/Patient_Screens/settings_screen.dart';
-import '/Patient_Screens/medcine_patient_screen.dart'; // fixed path
-import '/Patient_Screens/home_patient_screen.dart'; // real patient home
-import '/Doctor_Screens/home_doctor_screen.dart'; // doctor home
 import '/Patient_Screens/alert_settings_screen.dart';
-
-// 🔔 Notifications
 import '/Patient_Screens/notifications/notification_service.dart';
+//----------------------------------------------------------------------
+
+//------------------------------ services ------------------------------
+import 'services/bluetooth_service.dart';
+//----------------------------------------------------------------------
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
+  await BluetoothService().init();
+
   await Firebase.initializeApp();
 
   // Lock app to portrait only
-  await SystemChrome.setPreferredOrientations([
-    DeviceOrientation.portraitUp,
-    // DeviceOrientation.portraitDown,
-  ]);
+  await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
 
-  // Initialize local notifications: creates a high-importance channel
-  // and requests permission on Android 13+/iOS.
+  // Initialize local notifications
   await NotificationService.instance.init();
 
+  // make sure all screens can share the same app state
   runApp(
     ChangeNotifierProvider(create: (_) => AppState(), child: const MyApp()),
   );
@@ -55,13 +70,14 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         brightness: Brightness.light,
         useMaterial3: true,
-        primaryColor: const Color(0xFF4589FB),
-        scaffoldBackgroundColor: Colors.white,
+
+        primaryColor: AppColors.primary,
+        scaffoldBackgroundColor: AppColors.surface,
         textTheme: GoogleFonts.interTextTheme(Theme.of(context).textTheme),
         elevatedButtonTheme: ElevatedButtonThemeData(
           style: ElevatedButton.styleFrom(
             backgroundColor: const Color(0xFF195E99),
-            foregroundColor: Colors.white,
+            foregroundColor: AppColors.surface,
             textStyle: GoogleFonts.inter(
               fontSize: 16,
               fontWeight: FontWeight.w500,
@@ -74,6 +90,8 @@ class MyApp extends StatelessWidget {
         ),
       ),
       home: const AuthGate(),
+
+      // This is a map of all screens in your app
       routes: {
         SelectUserScreenWidget.routePath: (_) => const SelectUserScreenWidget(),
         SignInScreenWidget.routePath: (_) => const SignInScreenWidget(),
@@ -88,17 +106,22 @@ class MyApp extends StatelessWidget {
         HomeDoctorScreenWidget.routePath: (_) => const HomeDoctorScreenWidget(),
         AlertSettingsScreen.routePath: (_) => const AlertSettingsScreen(),
         PatientInfoScreen.routePath: (_) => const PatientInfoScreen(),
+        TrackingMedicineScreen.routePath:
+            (context) => const TrackingMedicineScreen(),
       },
     );
   }
 }
 
-/// 1) Watch Firebase auth. If signed out -> SelectUser; else -> RoleGate
+// Should i show the login screen, or should i take the user into the app
 class AuthGate extends StatelessWidget {
   const AuthGate({super.key});
 
   @override
   Widget build(BuildContext context) {
+    // StreamBuilder: listens to changes over time
+    // authStateChanges: tells us if the user is logged in or not
+
     return StreamBuilder<User?>(
       stream: FirebaseAuth.instance.authStateChanges(),
       builder: (context, snap) {
@@ -114,10 +137,12 @@ class AuthGate extends StatelessWidget {
   }
 }
 
-/// Ensures /users/<uid> exists, sets AppState.userType, then builds app
+/// Ensures each signed-in user has a Firestore `users` document (create if missing).
+/// Then checks their role (doctor/patient) and directs them to the right page.
 class RoleGate extends StatelessWidget {
   const RoleGate({super.key});
 
+  // usersRef: reference to the user's document 'users/<uid>'
   Future<DocumentSnapshot<Map<String, dynamic>>> _loadOrCreateUserDoc(
     DocumentReference<Map<String, dynamic>> usersRef,
     User u,
@@ -127,7 +152,10 @@ class RoleGate extends StatelessWidget {
       await usersRef.set({
         'email': u.email,
         'display_name': u.displayName,
-        'user_type': FieldValue.delete(), // force selection screen until chosen
+
+        // FieldValue.delete(): leave this blank for now, user will fill it in later.
+        // if we don't use it we will end up storing "unkown"
+        'user_type': FieldValue.delete(),
         'created_at': FieldValue.serverTimestamp(),
         'updated_at': FieldValue.serverTimestamp(),
       }, SetOptions(merge: true));
@@ -211,6 +239,7 @@ class RoleGate extends StatelessWidget {
   }
 }
 
+/// ******************** handle_bottom_navigation *********************
 class MainNavBarPage extends StatefulWidget {
   const MainNavBarPage({super.key});
   static const String routeName = '/main-nav-bar';
@@ -261,6 +290,8 @@ class _MainNavBarPageState extends State<MainNavBarPage> {
     final userType = context.watch<AppState>().userType;
     final isDoctor = userType == 'doctor';
 
+    // if doctor: show doctor pages + nav bar items
+    // if patient: show patient pages + nav bar items
     final currentPages = isDoctor ? _doctorPages : _patientPages;
     final currentNavItems = isDoctor ? _doctorNavItems : _patientNavItems;
 
@@ -272,7 +303,7 @@ class _MainNavBarPageState extends State<MainNavBarPage> {
         currentIndex: _selectedIndex,
         onTap: _onItemTapped,
         items: currentNavItems,
-        backgroundColor: const Color(0xFFFDFEFF),
+        backgroundColor: AppColors.bgBottom,
         selectedItemColor: const Color(0xFF4589FB),
         unselectedItemColor: const Color(0xFF9E9E9E),
         type: BottomNavigationBarType.fixed,

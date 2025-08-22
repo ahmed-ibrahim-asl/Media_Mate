@@ -1,8 +1,16 @@
-// lib/Patient_Screens/home_patient_screen.dart
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+//-------------------------- flutter_core ------------------------------
 import 'package:flutter/material.dart';
+//----------------------------------------------------------------------
+
+//-------------------------- flutter_packages --------------------------
 import 'package:google_fonts/google_fonts.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+//----------------------------------------------------------------------
+
+//----------------------------- app_local ------------------------------
+import 'package:media_mate/services/bluetooth_service.dart';
+//----------------------------------------------------------------------
 
 class HomePatientScreen extends StatefulWidget {
   const HomePatientScreen({super.key});
@@ -21,6 +29,12 @@ class _HomePatientScreenState extends State<HomePatientScreen> {
       FirebaseFirestore.instance.collection('Medicine');
 
   DateTime _selectedDate = DateTime.now();
+
+  // Maintain a map of selected medicine IDs to bool
+  final Map<String, bool> _selectedMeds = {};
+
+  // Maintain map to store container info of selected medicines
+  final Map<String, int> _medContainers = {};
 
   // ---------- Helpers ----------
   String _greetingName() {
@@ -44,7 +58,6 @@ class _HomePatientScreenState extends State<HomePatientScreen> {
   int? _timeForDay(List<dynamic>? raw, DateTime day) {
     if (raw == null || raw.isEmpty) return null;
     final minutes = raw.whereType<int>().toList()..sort();
-    // If viewing today, prefer the next upcoming time; otherwise show the first
     final now = DateTime.now();
     if (_isSameDay(day, now)) {
       final nowMin = now.hour * 60 + now.minute;
@@ -90,17 +103,6 @@ class _HomePatientScreenState extends State<HomePatientScreen> {
     return '';
   }
 
-  // ---------- Calendar ----------
-  DateTime _startOfWeek(DateTime d) {
-    // Monday as start
-    final int weekday = d.weekday; // Mon=1 ... Sun=7
-    return DateTime(
-      d.year,
-      d.month,
-      d.day,
-    ).subtract(Duration(days: weekday - 1));
-  }
-
   Future<void> _pickAnyDate() async {
     final d = await showDatePicker(
       context: context,
@@ -109,6 +111,134 @@ class _HomePatientScreenState extends State<HomePatientScreen> {
       lastDate: DateTime(DateTime.now().year + 5),
     );
     if (d != null) setState(() => _selectedDate = d);
+  }
+
+  void _onCheckboxChanged(String medId, bool? value, int container) {
+    print(container);
+
+    setState(() {
+      if (value == true) {
+        _selectedMeds[medId] = true;
+        _medContainers[medId] = container;
+      } else {
+        _selectedMeds.remove(medId);
+        _medContainers.remove(medId);
+      }
+    });
+  }
+
+  // Your provided method with char array and flag 'X'
+  Future<void> _onTakeButtonPressed() async {
+    if (_selectedMeds.isEmpty) {
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(const SnackBar(content: Text('No medicines selected.')));
+      return;
+    }
+
+    // Bits for your hardware payload: 3 containers + trailing 'X'
+    final List<String> containerArray = ['0', '0', '0'];
+    final String? patientAuthUid = _auth.currentUser?.uid;
+    if (patientAuthUid == null) {
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(const SnackBar(content: Text('You are signed out.')));
+      return;
+    }
+
+    final now = DateTime.now();
+    final batch = FirebaseFirestore.instance.batch();
+
+    int writtenLogs = 0; // for UX feedback
+    int skippedMissingDoc = 0; // med deleted or id invalid
+    int skippedNoTimes = 0; // no schedule => nothing to mark
+
+    // Pre-read & validate selected meds, set container bits, and queue logs
+    for (final medId in _selectedMeds.keys) {
+      if (medId.trim().isEmpty) continue;
+
+      final medRef = FirebaseFirestore.instance
+          .collection('Medicine')
+          .doc(medId);
+      final medSnap = await medRef.get();
+
+      // 1) Parent doc must exist -> otherwise we’d create a “ghost parent”
+      if (!medSnap.exists) {
+        skippedMissingDoc++;
+        continue;
+      }
+
+      // 2) Extract & validate times (must be ints: minutes since midnight)
+      final times =
+          (medSnap.data()?['times'] as List?)?.whereType<int>().toList() ??
+          const <int>[];
+      if (times.isEmpty) {
+        skippedNoTimes++;
+        continue;
+      }
+
+      // 3) Set hardware container bit if present
+      final container = _medContainers[medId];
+      if (container != null && container >= 1 && container <= 3) {
+        containerArray[container - 1] = '1';
+      }
+
+      // 4) Queue one log per scheduled time (taken = true)
+      for (final scheduledTime in times) {
+        final logRef =
+            medRef.collection('logs').doc(); // batch requires doc().set
+        batch.set(logRef, {
+          'patient_id': patientAuthUid, // patient’s FirebaseAuth UID
+          'taken': true,
+          'date': Timestamp.fromDate(now),
+          'scheduled_time': scheduledTime, // int (minutes since midnight)
+          'created_at': FieldValue.serverTimestamp(), // optional: audit
+          'source': 'patient_app', // optional: audit
+        });
+        writtenLogs++;
+      }
+    }
+
+    // 5) Commit the logs first; only send Bluetooth if DB write succeeded
+    try {
+      if (writtenLogs > 0) {
+        await batch.commit();
+      }
+    } catch (e) {
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text('Failed to save logs: $e')));
+      return; // don’t send hardware message if DB failed
+    }
+
+    // 6) Build & send the hardware message
+    containerArray.add('X');
+    final String messageToSend = containerArray.join();
+    try {
+      await BluetoothService().send(messageToSend);
+      final parts = <String>[
+        if (writtenLogs > 0)
+          'Logged $writtenLogs time${writtenLogs == 1 ? '' : 's'}',
+        if (skippedMissingDoc > 0)
+          'Skipped $skippedMissingDoc deleted/unknown medicine${skippedMissingDoc == 1 ? '' : 's'}',
+        if (skippedNoTimes > 0)
+          'Skipped $skippedNoTimes medicine${skippedNoTimes == 1 ? '' : 's'} with no times',
+        'Sent code: $messageToSend',
+      ];
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text(parts.join(' • '))));
+    } catch (e) {
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text('Error sending to device: $e')));
+    }
+
+    // 7) Reset selection
+    setState(() {
+      _selectedMeds.clear();
+      _medContainers.clear();
+    });
   }
 
   @override
@@ -140,15 +270,12 @@ class _HomePatientScreenState extends State<HomePatientScreen> {
                   ),
                 ),
                 const SizedBox(height: 16),
-
-                // Calendar card
                 _CalendarCard(
                   date: _selectedDate,
                   onToday: () => setState(() => _selectedDate = DateTime.now()),
                   onOpenPicker: _pickAnyDate,
                   onDayTap: (d) => setState(() => _selectedDate = d),
                 ),
-
                 const SizedBox(height: 20),
                 Text(
                   'Medicines Today',
@@ -159,8 +286,6 @@ class _HomePatientScreenState extends State<HomePatientScreen> {
                   ),
                 ),
                 const SizedBox(height: 12),
-
-                // Medicines list
                 Expanded(
                   child:
                       uid == null
@@ -194,11 +319,8 @@ class _HomePatientScreenState extends State<HomePatientScreen> {
                                   ),
                                 );
                               }
-
                               final all = snap.data!.docs;
-
-                              // Filter active for selected date and having at least one time
-                              final items = <_MedView>[];
+                              final meds = <_MedView>[];
                               for (final d in all) {
                                 final m = d.data();
                                 if (!_isActiveForDate(m, _selectedDate))
@@ -209,7 +331,7 @@ class _HomePatientScreenState extends State<HomePatientScreen> {
                                 );
                                 if (nextTime == null) continue;
 
-                                items.add(
+                                meds.add(
                                   _MedView(
                                     id: d.id,
                                     name: (m['name'] ?? '').toString(),
@@ -224,18 +346,16 @@ class _HomePatientScreenState extends State<HomePatientScreen> {
                                     instruction:
                                         (m['instruction'] ?? '').toString(),
                                     timeLabel: _formatTime(nextTime),
+                                    container: m['container_number'],
                                   ),
                                 );
                               }
-
-                              // Sort by time in the selected day
-                              items.sort((a, b) {
-                                int pa = _parseMinutes(a.timeLabel);
-                                int pb = _parseMinutes(b.timeLabel);
-                                return pa.compareTo(pb);
-                              });
-
-                              if (items.isEmpty) {
+                              meds.sort(
+                                (a, b) => _parseMinutes(
+                                  a.timeLabel,
+                                ).compareTo(_parseMinutes(b.timeLabel)),
+                              );
+                              if (meds.isEmpty) {
                                 return Center(
                                   child: Text(
                                     'No medicines scheduled for this day.',
@@ -245,83 +365,156 @@ class _HomePatientScreenState extends State<HomePatientScreen> {
                                   ),
                                 );
                               }
-
-                              return ListView.separated(
-                                padding: const EdgeInsets.only(bottom: 24),
-                                itemCount: items.length,
-                                separatorBuilder:
-                                    (_, __) => const SizedBox(height: 16),
-                                itemBuilder: (_, i) {
-                                  final it = items[i];
-                                  final bg =
-                                      i.isEven
-                                          ? const Color(0xFFFEE0E0) // soft red
-                                          : const Color(
-                                            0xFFE7F0FE,
-                                          ); // soft blue
-                                  final meal = _mealHint(it.instruction);
-
-                                  return Container(
-                                    decoration: BoxDecoration(
-                                      color: bg,
-                                      borderRadius: BorderRadius.circular(12),
-                                      boxShadow: const [
-                                        BoxShadow(
-                                          color: Color(0x22000000),
-                                          blurRadius: 8,
-                                          offset: Offset(0, 3),
+                              return Column(
+                                children: [
+                                  Expanded(
+                                    child: ListView.separated(
+                                      padding: const EdgeInsets.only(bottom: 8),
+                                      itemCount: meds.length,
+                                      separatorBuilder:
+                                          (_, __) => const SizedBox(height: 16),
+                                      itemBuilder: (context, i) {
+                                        final med = meds[i];
+                                        final bg =
+                                            i.isEven
+                                                ? const Color(0xFFFEE0E0)
+                                                : const Color(0xFFE7F0FE);
+                                        final meal = _mealHint(med.instruction);
+                                        final checked =
+                                            _selectedMeds[med.id] ?? false;
+                                        return Container(
+                                          decoration: BoxDecoration(
+                                            color: bg,
+                                            borderRadius: BorderRadius.circular(
+                                              12,
+                                            ),
+                                            boxShadow: const [
+                                              BoxShadow(
+                                                color: Color(0x22000000),
+                                                blurRadius: 8,
+                                                offset: Offset(0, 3),
+                                              ),
+                                            ],
+                                          ),
+                                          padding: const EdgeInsets.fromLTRB(
+                                            16,
+                                            14,
+                                            16,
+                                            14,
+                                          ),
+                                          child: Row(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Expanded(
+                                                child: Column(
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
+                                                  children: [
+                                                    Text(
+                                                      med.name.isEmpty
+                                                          ? 'Unnamed medicine'
+                                                          : med.name,
+                                                      style: GoogleFonts.inter(
+                                                        fontSize: 16,
+                                                        fontWeight:
+                                                            FontWeight.w700,
+                                                        color: const Color(
+                                                          0xFF222B32,
+                                                        ),
+                                                      ),
+                                                    ),
+                                                    const SizedBox(height: 6),
+                                                    Text(
+                                                      [
+                                                        med.timeLabel,
+                                                        if (med.pillsPerDay > 0)
+                                                          '${med.pillsPerDay} Pill${med.pillsPerDay == 1 ? '' : 's'}',
+                                                        if (med.dose.isNotEmpty)
+                                                          med.dose,
+                                                        if (meal.isNotEmpty)
+                                                          meal,
+                                                        'Container ${med.container}',
+                                                      ].join(' · '),
+                                                      style: GoogleFonts.inter(
+                                                        fontSize: 13,
+                                                        fontWeight:
+                                                            FontWeight.w700,
+                                                        color: const Color(
+                                                          0xFF222B32,
+                                                        ),
+                                                      ),
+                                                    ),
+                                                    const SizedBox(height: 6),
+                                                    Text(
+                                                      med.instruction.isEmpty
+                                                          ? '—'
+                                                          : med.instruction,
+                                                      style: GoogleFonts.inter(
+                                                        fontSize: 13,
+                                                        color: const Color(
+                                                          0xFF757575,
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                              Checkbox(
+                                                value: checked,
+                                                onChanged:
+                                                    (v) => _onCheckboxChanged(
+                                                      med.id,
+                                                      v,
+                                                      med.container,
+                                                    ),
+                                                shape: RoundedRectangleBorder(
+                                                  borderRadius:
+                                                      BorderRadius.circular(6),
+                                                ),
+                                                activeColor: const Color(
+                                                  0xFF7A5AF5,
+                                                ),
+                                                checkColor: Colors.white,
+                                                materialTapTargetSize:
+                                                    MaterialTapTargetSize
+                                                        .shrinkWrap,
+                                              ),
+                                            ],
+                                          ),
+                                        );
+                                      },
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    width: double.infinity,
+                                    child: ElevatedButton(
+                                      onPressed: _onTakeButtonPressed,
+                                      style: ElevatedButton.styleFrom(
+                                        padding: const EdgeInsets.symmetric(
+                                          vertical: 14,
                                         ),
-                                      ],
-                                    ),
-                                    padding: const EdgeInsets.fromLTRB(
-                                      16,
-                                      14,
-                                      16,
-                                      14,
-                                    ),
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Text(
-                                          it.name.isEmpty
-                                              ? 'Unnamed medicine'
-                                              : it.name,
-                                          style: GoogleFonts.inter(
-                                            fontSize: 16,
-                                            fontWeight: FontWeight.w700,
-                                            color: const Color(0xFF222B32),
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.circular(
+                                            12,
                                           ),
                                         ),
-                                        const SizedBox(height: 6),
-                                        Text(
-                                          [
-                                            it.timeLabel,
-                                            if (it.pillsPerDay > 0)
-                                              '${it.pillsPerDay} Pill${it.pillsPerDay == 1 ? '' : 's'}',
-                                            if (it.dose.isNotEmpty) it.dose,
-                                            if (meal.isNotEmpty) meal,
-                                          ].join(' · '),
-                                          style: GoogleFonts.inter(
-                                            fontSize: 13,
-                                            fontWeight: FontWeight.w700,
-                                            color: const Color(0xFF222B32),
-                                          ),
+                                        backgroundColor: const Color(
+                                          0xFF7A5AF5,
                                         ),
-                                        const SizedBox(height: 6),
-                                        Text(
-                                          it.instruction.isEmpty
-                                              ? '—'
-                                              : it.instruction,
-                                          style: GoogleFonts.inter(
-                                            fontSize: 13,
-                                            color: const Color(0xFF757575),
-                                          ),
+                                      ),
+                                      child: Text(
+                                        'Take',
+                                        style: GoogleFonts.inter(
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.w700,
+                                          color: Colors.white,
                                         ),
-                                      ],
+                                      ),
                                     ),
-                                  );
-                                },
+                                  ),
+                                  const SizedBox(height: 12),
+                                ],
                               );
                             },
                           ),
@@ -334,25 +527,36 @@ class _HomePatientScreenState extends State<HomePatientScreen> {
     );
   }
 
-  // Parses a "h:mm AM/PM" into minutes since midnight for sorting
   int _parseMinutes(String label) {
-    // Very small parser based on what _formatTime produces
-    // Example: "2:30 PM"
     try {
-      final parts = label.split(' ');
-      final hm = parts[0].split(':');
+      // Expect things like: "2:30 PM", "12:05 am"
+      final parts = label.trim().split(RegExp(r'\s+'));
+      if (parts.length < 2) return 0;
+
+      final timePart = parts[0]; // "2:30"
+      final amPm = parts[1].toUpperCase(); // "PM"
+
+      final hm = timePart.split(':');
+      if (hm.length < 2) return 0;
+
       int h = int.parse(hm[0]);
-      final m = int.parse(hm[1]);
-      final pm = parts[1].toUpperCase() == 'PM';
-      if (h == 12) h = 0;
-      return (pm ? (h + 12) : h) * 60 + m;
+      int m = int.parse(hm[1]);
+
+      // Normalize to 24h
+      if (amPm == 'PM' && h != 12) {
+        h += 12;
+      } else if (amPm == 'AM' && h == 12) {
+        h = 0;
+      }
+
+      return h * 60 + m;
     } catch (_) {
       return 0;
     }
   }
 }
 
-// Simple data holder for the list
+// Simple data holder for medicines with container info
 class _MedView {
   _MedView({
     required this.id,
@@ -361,6 +565,7 @@ class _MedView {
     required this.pillsPerDay,
     required this.instruction,
     required this.timeLabel,
+    required this.container,
   });
 
   final String id;
@@ -369,6 +574,7 @@ class _MedView {
   final int pillsPerDay;
   final String instruction;
   final String timeLabel;
+  final int container;
 }
 
 // ---------- Calendar card widget ----------
@@ -401,7 +607,6 @@ class _CalendarCard extends StatelessWidget {
       7,
       (i) => start.add(Duration(days: i)),
     );
-
     final monthTitle = '${_monthName(date.month)} ${date.year}';
 
     return Container(
@@ -430,8 +635,6 @@ class _CalendarCard extends StatelessWidget {
                 ),
               ),
               const Spacer(),
-
-              // Today (text-only)
               TextButton(
                 onPressed: onToday,
                 style: TextButton.styleFrom(
@@ -445,8 +648,6 @@ class _CalendarCard extends StatelessWidget {
                 child: const Text('Today'),
               ),
               const SizedBox(width: 6),
-
-              // Single calendar icon for date picker
               Container(
                 decoration: BoxDecoration(
                   color: const Color(0xFFF1EEFF),
@@ -461,7 +662,6 @@ class _CalendarCard extends StatelessWidget {
               ),
             ],
           ),
-
           const SizedBox(height: 10),
           Row(
             children: const [

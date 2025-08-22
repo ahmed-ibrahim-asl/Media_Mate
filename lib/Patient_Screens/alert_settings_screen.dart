@@ -1,13 +1,17 @@
-// lib/Patient_Screens/alert_settings_screen.dart
-import 'dart:io';
+//-------------------------- flutter_core ------------------------------
+import 'package:flutter/material.dart';
+//----------------------------------------------------------------------
 
+//-------------------------- flutter_packages --------------------------
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+//----------------------------------------------------------------------
 
+//----------------------------- app_local ------------------------------
 import '../Patient_Screens/notifications/notification_service.dart';
+//----------------------------------------------------------------------
 
 class AlertSettingsScreen extends StatefulWidget {
   const AlertSettingsScreen({super.key});

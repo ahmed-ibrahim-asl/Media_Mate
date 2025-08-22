@@ -1,16 +1,19 @@
-// lib/authentication/signIn_screen.dart
-import 'dart:ui';
+//-------------------------- flutter_core ------------------------------
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+//----------------------------------------------------------------------
+
+//-------------------------- flutter_packages --------------------------
 import 'package:google_fonts/google_fonts.dart';
 import 'package:google_sign_in/google_sign_in.dart' as gsi;
-import 'package:media_mate/authentication/signUp_screen.dart';
 import 'package:provider/provider.dart';
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+//----------------------------------------------------------------------
 
+//----------------------------- app_local ------------------------------
 import '/app_state.dart';
+//----------------------------------------------------------------------
 
 class SignInScreenWidget extends StatefulWidget {
   const SignInScreenWidget({super.key});

@@ -1,9 +1,16 @@
-// lib/home_doctor_screen.dart
+//-------------------------- flutter_core ------------------------------
+import 'package:flutter/material.dart';
+//----------------------------------------------------------------------
+
+//-------------------------- flutter_packages --------------------------
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+//----------------------------------------------------------------------
+
+//----------------------------- app_local ------------------------------
 import 'package:media_mate/Doctor_Screens/patient_info_screen.dart';
+//----------------------------------------------------------------------
 
 class HomeDoctorScreenWidget extends StatefulWidget {
   const HomeDoctorScreenWidget({super.key});

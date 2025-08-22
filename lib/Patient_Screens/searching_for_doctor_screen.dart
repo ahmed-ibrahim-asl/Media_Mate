@@ -1,6 +1,12 @@
-// lib/searching_for_doctor_screen.dart
-import 'package:cloud_firestore/cloud_firestore.dart';
+//-------------------------- flutter_core ----------------------------
 import 'package:flutter/material.dart';
+//----------------------------------------------------------------------
+
+//-------------------------- flutter_packages --------------------------
+import 'package:cloud_firestore/cloud_firestore.dart';
+//----------------------------------------------------------------------
+
+import 'package:media_mate/theme/colors.dart';
 
 class SearchingForDoctorScreenWidget extends StatefulWidget {
   const SearchingForDoctorScreenWidget({super.key});
@@ -53,7 +59,8 @@ class _SearchingForDoctorScreenWidgetState
     if (lower.startsWith('dr/') || lower.startsWith('dr ') || lower == 'dr') {
       return n;
     }
-    return n; // keep as-is; your docs use `display_name`
+
+    return 'Dr/ $n'; // keep as-is; your docs use `display_name`
   }
 
   @override
@@ -69,7 +76,7 @@ class _SearchingForDoctorScreenWidgetState
           child: Container(
             decoration: const BoxDecoration(
               gradient: LinearGradient(
-                colors: [Color(0xFFEAF9FF), Color(0xFFFDFEFF)],
+                colors: [AppColors.bgTop, AppColors.bgBottom],
                 begin: Alignment.topCenter,
                 end: Alignment.bottomCenter,
               ),
@@ -111,7 +118,7 @@ class _SearchingForDoctorScreenWidgetState
                     child: Container(
                       height: 44,
                       decoration: BoxDecoration(
-                        color: Colors.white,
+                        color: AppColors.surface,
                         borderRadius: BorderRadius.circular(22),
                         boxShadow: const [
                           BoxShadow(
@@ -267,7 +274,7 @@ class _SearchingForDoctorScreenWidgetState
                           child: Container(
                             height: 100,
                             decoration: BoxDecoration(
-                              color: Colors.white,
+                              color: AppColors.surface,
                               borderRadius: BorderRadius.circular(14),
                               boxShadow: const [
                                 BoxShadow(

@@ -1,12 +1,21 @@
-// lib/Patient_Screens/medicine_patient_screen.dart
-import 'dart:math' as math;
-
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+//-------------------------- flutter_core ------------------------------
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+//----------------------------------------------------------------------
+
+//----------------------------- dart_core ------------------------------
+import 'dart:math' as math;
+//----------------------------------------------------------------------
+
+//-------------------------- flutter_packages --------------------------
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_fonts/google_fonts.dart';
+//----------------------------------------------------------------------
+
+//----------------------------- app_local ------------------------------
 import 'package:media_mate/Patient_Screens/notifications/notification_service.dart';
+//----------------------------------------------------------------------
 
 class MedicinePatientScreen extends StatefulWidget {
   const MedicinePatientScreen({super.key});
@@ -21,11 +30,9 @@ class MedicinePatientScreen extends StatefulWidget {
 class _MedicinePatientScreenState extends State<MedicinePatientScreen> {
   String? get _uid => FirebaseAuth.instance.currentUser?.uid;
 
-  /// Top-level "Medicine" collection (each document must contain `patient_id`)
   CollectionReference<Map<String, dynamic>> get _medsCol =>
       FirebaseFirestore.instance.collection('Medicine');
 
-  // ----------------- Helpers -----------------
   String _formatTime(int minutesSinceMidnight) {
     final h = minutesSinceMidnight ~/ 60;
     final m = minutesSinceMidnight % 60;
@@ -203,6 +210,8 @@ class _MedicinePatientScreenState extends State<MedicinePatientScreen> {
                           final timesText = _formatTimes(
                             m['times'] as List<dynamic>?,
                           );
+                          final container =
+                              m['container_number']?.toString() ?? '—';
 
                           final bg =
                               i.isEven
@@ -296,17 +305,35 @@ class _MedicinePatientScreenState extends State<MedicinePatientScreen> {
                                         crossAxisAlignment:
                                             CrossAxisAlignment.start,
                                         children: [
-                                          Text(
-                                            name.isEmpty
-                                                ? 'Unnamed medicine'
-                                                : name,
-                                            maxLines: 1,
-                                            overflow: TextOverflow.ellipsis,
-                                            style: GoogleFonts.inter(
-                                              fontSize: 18,
-                                              fontWeight: FontWeight.w600,
-                                              color: const Color(0xFF222B32),
-                                            ),
+                                          Row(
+                                            children: [
+                                              Text(
+                                                name.isEmpty
+                                                    ? 'Unnamed medicine'
+                                                    : name,
+                                                maxLines: 1,
+                                                overflow: TextOverflow.ellipsis,
+                                                style: GoogleFonts.inter(
+                                                  fontSize: 18,
+                                                  fontWeight: FontWeight.w600,
+                                                  color: const Color(
+                                                    0xFF222B32,
+                                                  ),
+                                                ),
+                                              ),
+                                              const Spacer(flex: 1),
+                                              Text(
+                                                'Container: $container',
+                                                style: GoogleFonts.inter(
+                                                  fontSize: 12,
+                                                  color: const Color(
+                                                    0xFF4977B9,
+                                                  ),
+                                                  fontWeight: FontWeight.bold,
+                                                ),
+                                              ),
+                                              SizedBox(width: 10),
+                                            ],
                                           ),
                                           const SizedBox(height: 2),
                                           Text(
@@ -413,22 +440,55 @@ class _AddMedicineDialog extends StatefulWidget {
 class _AddMedicineDialogState extends State<_AddMedicineDialog> {
   final _formKey = GlobalKey<FormState>();
   final _name = TextEditingController();
-  final _doseValue = TextEditingController(); // numeric-only
+  final _doseValue = TextEditingController();
   final _pillsPerDay = TextEditingController();
   final _instruction = TextEditingController();
 
-  final List<int> _times = []; // minutes since midnight
+  final List<int> _times = [];
   bool _longTerm = true;
   DateTime? _startDate;
   DateTime? _endDate;
 
-  // ToggleButtons state (mutually exclusive)
+  int? _containerNumber;
+  List<int> _availableContainers = [];
+  bool _loadingContainers = true;
+
   final List<String> _units = const ['mg', 'g', 'IU'];
-  List<bool> _unitSelected = [true, false, false]; // default mg
+  List<bool> _unitSelected = [true, false, false];
 
   String get _doseUnit {
     final idx = _unitSelected.indexWhere((e) => e);
     return idx >= 0 ? _units[idx] : 'mg';
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _loadAvailableContainers();
+  }
+
+  Future<void> _loadAvailableContainers() async {
+    final uid = FirebaseAuth.instance.currentUser?.uid;
+    if (uid == null) {
+      setState(() {
+        _availableContainers = [];
+        _loadingContainers = false;
+      });
+      return;
+    }
+    final docs =
+        await widget.collection.where('patient_id', isEqualTo: uid).get();
+    final used =
+        docs.docs
+            .map((d) => d.data()['container_number'] as int?)
+            .where((x) => x != null)
+            .cast<int>()
+            .toSet();
+    setState(() {
+      _availableContainers = [1, 2, 3].where((c) => !used.contains(c)).toList();
+      _containerNumber = null;
+      _loadingContainers = false;
+    });
   }
 
   void _selectUnit(int index) {
@@ -491,15 +551,55 @@ class _AddMedicineDialogState extends State<_AddMedicineDialog> {
     if (d != null) setState(() => _endDate = d);
   }
 
+  Widget _containerSelector() {
+    if (_loadingContainers) {
+      return const Padding(
+        padding: EdgeInsets.symmetric(vertical: 12),
+        child: Center(child: CircularProgressIndicator()),
+      );
+    }
+    if (_availableContainers.isEmpty) {
+      return Padding(
+        padding: const EdgeInsets.symmetric(vertical: 12),
+        child: Text(
+          'All containers are occupied.\nDelete one first to add another.',
+          style: GoogleFonts.inter(
+            fontSize: 16,
+            color: Colors.red,
+            fontWeight: FontWeight.bold,
+          ),
+          textAlign: TextAlign.center,
+        ),
+      );
+    }
+    return DropdownButtonFormField<int>(
+      decoration: const InputDecoration(
+        labelText: 'Container',
+        border: OutlineInputBorder(),
+      ),
+      value: _containerNumber,
+      items:
+          _availableContainers
+              .map(
+                (n) => DropdownMenuItem(value: n, child: Text('Container $n')),
+              )
+              .toList(),
+      onChanged: (val) => setState(() => _containerNumber = val),
+      validator: (v) => v == null ? 'Select a container' : null,
+    );
+  }
+
   Future<void> _save() async {
-    if (!_formKey.currentState!.validate()) return;
+    if (!_formKey.currentState!.validate() ||
+        _availableContainers.isEmpty ||
+        _containerNumber == null)
+      return;
     if (_times.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Please add at least one time')),
       );
       return;
     }
-
     final uid = FirebaseAuth.instance.currentUser?.uid;
     if (uid == null) return;
 
@@ -544,6 +644,7 @@ class _AddMedicineDialogState extends State<_AddMedicineDialog> {
                 ),
         'created_at': FieldValue.serverTimestamp(),
         'updated_at': FieldValue.serverTimestamp(),
+        'container_number': _containerNumber,
       });
 
       for (final m in _times) {
@@ -575,7 +676,6 @@ class _AddMedicineDialogState extends State<_AddMedicineDialog> {
     }
   }
 
-  // Reusable, styled unit selector with safe sizing and scrolling
   Widget _unitToggle() {
     return SingleChildScrollView(
       scrollDirection: Axis.horizontal,
@@ -586,12 +686,11 @@ class _AddMedicineDialogState extends State<_AddMedicineDialog> {
         borderWidth: 1.2,
         renderBorder: true,
         constraints: const BoxConstraints(minHeight: 40, minWidth: 64),
-        // colors
-        borderColor: const Color(0xFFCBD5E1), // slate-300
+        borderColor: const Color(0xFFCBD5E1),
         selectedBorderColor: const Color(0xFF1766B9),
-        fillColor: const Color(0x1F1766B9), // 12% tint
+        fillColor: const Color(0x1F1766B9),
         selectedColor: const Color(0xFF1766B9),
-        color: const Color(0xFF374151), // slate-700
+        color: const Color(0xFF374151),
         children:
             _units
                 .map(
@@ -626,7 +725,7 @@ class _AddMedicineDialogState extends State<_AddMedicineDialog> {
               key: _formKey,
               child: LayoutBuilder(
                 builder: (context, constraints) {
-                  final narrow = constraints.maxWidth < 420; // adaptive break
+                  final narrow = constraints.maxWidth < 420;
                   final doseField = TextFormField(
                     controller: _doseValue,
                     keyboardType: const TextInputType.numberWithOptions(
@@ -658,6 +757,10 @@ class _AddMedicineDialogState extends State<_AddMedicineDialog> {
                         ),
                       ),
                       const SizedBox(height: 12),
+
+                      _containerSelector(),
+                      const SizedBox(height: 10),
+
                       TextFormField(
                         controller: _name,
                         decoration: const InputDecoration(
@@ -669,7 +772,6 @@ class _AddMedicineDialogState extends State<_AddMedicineDialog> {
                       ),
                       const SizedBox(height: 10),
 
-                      // ---- Adaptive dose + unit layout ----
                       if (!narrow)
                         Row(
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -738,7 +840,6 @@ class _AddMedicineDialogState extends State<_AddMedicineDialog> {
                       ),
                       const SizedBox(height: 12),
 
-                      // time chips + button
                       Row(
                         children: [
                           Expanded(
@@ -880,9 +981,13 @@ class _AddMedicineDialogState extends State<_AddMedicineDialog> {
                       SizedBox(
                         width: double.infinity,
                         child: ElevatedButton(
-                          onPressed: _save,
+                          onPressed:
+                              (_availableContainers.isEmpty) ? null : _save,
                           style: ElevatedButton.styleFrom(
-                            backgroundColor: const Color(0xFF007800),
+                            backgroundColor:
+                                (_availableContainers.isEmpty)
+                                    ? Colors.grey
+                                    : const Color(0xFF007800),
                             foregroundColor: Colors.white,
                             elevation: 0,
                             shape: RoundedRectangleBorder(

@@ -1,10 +1,20 @@
-// lib/Doctor_Screens/patient_info_screen.dart
+//----------------------------- dart_core ------------------------------
 import 'dart:math' as math;
+//----------------------------------------------------------------------
 
-import 'package:cloud_firestore/cloud_firestore.dart';
+//-------------------------- flutter_core ------------------------------
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+//----------------------------------------------------------------------
+
+//-------------------------- flutter_packages --------------------------
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:google_fonts/google_fonts.dart';
+//----------------------------------------------------------------------
+
+//----------------------------- app_local ------------------------------
+import 'package:media_mate/Doctor_Screens/tracking_medicine.dart';
+//----------------------------------------------------------------------
 
 class PatientInfoScreen extends StatefulWidget {
   const PatientInfoScreen({super.key, this.patientId, this.displayName});
@@ -460,11 +470,16 @@ class _PatientInfoScreenState extends State<PatientInfoScreen> {
                                         height: 30,
                                         child: ElevatedButton(
                                           onPressed: () {
-                                            _showMedDetailsDialog(
-                                              context,
-                                              data,
+                                            Navigator.of(context).pushNamed(
+                                              TrackingMedicineScreen.routePath,
+                                              arguments: {
+                                                'medicineId': doc.id,
+                                                'title': name,
+                                                'patientId': patientId,
+                                              },
                                             );
                                           },
+
                                           style: ElevatedButton.styleFrom(
                                             elevation: 0,
                                             backgroundColor: const Color(
