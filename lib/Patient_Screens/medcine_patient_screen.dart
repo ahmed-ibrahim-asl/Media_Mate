@@ -15,6 +15,7 @@ import 'package:google_fonts/google_fonts.dart';
 
 //----------------------------- app_local ------------------------------
 import 'package:media_mate/Patient_Screens/notifications/notification_service.dart';
+import 'package:media_mate/theme/colors.dart';
 //----------------------------------------------------------------------
 
 class MedicinePatientScreen extends StatefulWidget {
@@ -116,7 +117,7 @@ class _MedicinePatientScreenState extends State<MedicinePatientScreen> {
         child: Container(
           decoration: const BoxDecoration(
             gradient: LinearGradient(
-              colors: [Color(0xFFEAF9FF), Color(0xFFFDFEFF)],
+              colors: [AppColors.bgTop, AppColors.bgBottom],
               begin: Alignment.topCenter,
               end: Alignment.bottomCenter,
             ),
@@ -181,7 +182,7 @@ class _MedicinePatientScreenState extends State<MedicinePatientScreen> {
                             'No medications yet.\nTap the + button to add one.',
                             textAlign: TextAlign.center,
                             style: GoogleFonts.inter(
-                              color: const Color(0xFF606C77),
+                              color: AppColors.textSubtle,
                               fontSize: 15,
                             ),
                           ),
@@ -230,7 +231,7 @@ class _MedicinePatientScreenState extends State<MedicinePatientScreen> {
                               ),
                               child: const Icon(
                                 Icons.delete,
-                                color: Colors.white,
+                                color: AppColors.surface,
                               ),
                             ),
                             confirmDismiss: (_) async {
@@ -289,7 +290,7 @@ class _MedicinePatientScreenState extends State<MedicinePatientScreen> {
                                       width: 56,
                                       height: 56,
                                       decoration: BoxDecoration(
-                                        color: Colors.white,
+                                        color: AppColors.surface,
                                         borderRadius: BorderRadius.circular(28),
                                       ),
                                       child: const Icon(
@@ -404,7 +405,7 @@ class _MedicinePatientScreenState extends State<MedicinePatientScreen> {
                   width: 35,
                   height: 8,
                   decoration: BoxDecoration(
-                    color: Colors.white,
+                    color: AppColors.surface,
                     borderRadius: BorderRadius.circular(20),
                   ),
                 ),
@@ -414,7 +415,7 @@ class _MedicinePatientScreenState extends State<MedicinePatientScreen> {
                     width: 35,
                     height: 8,
                     decoration: BoxDecoration(
-                      color: Colors.white,
+                      color: AppColors.surface,
                       borderRadius: BorderRadius.circular(20),
                     ),
                   ),
@@ -687,9 +688,9 @@ class _AddMedicineDialogState extends State<_AddMedicineDialog> {
         renderBorder: true,
         constraints: const BoxConstraints(minHeight: 40, minWidth: 64),
         borderColor: const Color(0xFFCBD5E1),
-        selectedBorderColor: const Color(0xFF1766B9),
+        selectedBorderColor: AppColors.primary,
         fillColor: const Color(0x1F1766B9),
-        selectedColor: const Color(0xFF1766B9),
+        selectedColor: AppColors.primary,
         color: const Color(0xFF374151),
         children:
             _units
@@ -713,7 +714,7 @@ class _AddMedicineDialogState extends State<_AddMedicineDialog> {
   @override
   Widget build(BuildContext context) {
     return Dialog(
-      backgroundColor: Colors.white,
+      backgroundColor: AppColors.surface,
       insetPadding: const EdgeInsets.symmetric(horizontal: 24),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
       child: ConstrainedBox(
@@ -872,8 +873,8 @@ class _AddMedicineDialogState extends State<_AddMedicineDialog> {
                           ElevatedButton(
                             onPressed: _pickTime,
                             style: ElevatedButton.styleFrom(
-                              backgroundColor: const Color(0xFF1766B9),
-                              foregroundColor: Colors.white,
+                              backgroundColor: AppColors.primary,
+                              foregroundColor: AppColors.surface,
                               elevation: 0,
                               fixedSize: const Size(120, 30),
                               padding: const EdgeInsets.symmetric(
@@ -903,7 +904,7 @@ class _AddMedicineDialogState extends State<_AddMedicineDialog> {
                         onChanged:
                             (v) => setState(() => _longTerm = v ?? _longTerm),
                         controlAffinity: ListTileControlAffinity.trailing,
-                        activeColor: const Color(0xFF1766B9),
+                        activeColor: AppColors.primary,
                         dense: true,
                         visualDensity: VisualDensity.compact,
                       ),
@@ -916,9 +917,10 @@ class _AddMedicineDialogState extends State<_AddMedicineDialog> {
                               child: OutlinedButton(
                                 onPressed: _pickStartDate,
                                 style: OutlinedButton.styleFrom(
-                                  foregroundColor: const Color(0xFF1766B9),
+                                  foregroundColor: AppColors.primary,
+
                                   side: const BorderSide(
-                                    color: Color(0xFF1766B9),
+                                    color: AppColors.primary,
                                     width: 1.5,
                                   ),
                                   shape: RoundedRectangleBorder(
@@ -947,9 +949,10 @@ class _AddMedicineDialogState extends State<_AddMedicineDialog> {
                               child: OutlinedButton(
                                 onPressed: _pickEndDate,
                                 style: OutlinedButton.styleFrom(
-                                  foregroundColor: const Color(0xFF1766B9),
+                                  foregroundColor: AppColors.primary,
+
                                   side: const BorderSide(
-                                    color: Color(0xFF1766B9),
+                                    color: AppColors.primary,
                                     width: 1.5,
                                   ),
                                   shape: RoundedRectangleBorder(
@@ -988,7 +991,7 @@ class _AddMedicineDialogState extends State<_AddMedicineDialog> {
                                 (_availableContainers.isEmpty)
                                     ? Colors.grey
                                     : const Color(0xFF007800),
-                            foregroundColor: Colors.white,
+                            foregroundColor: AppColors.surface,
                             elevation: 0,
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(8),

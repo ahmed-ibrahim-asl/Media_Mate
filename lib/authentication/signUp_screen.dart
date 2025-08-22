@@ -9,6 +9,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
+import 'package:media_mate/theme/colors.dart';
 import 'package:provider/provider.dart';
 //----------------------------------------------------------------------
 
@@ -460,7 +461,7 @@ class _SignUpScreenWidgetState extends State<SignUpScreenWidget> {
                           child: ElevatedButton(
                             onPressed: _busy ? null : _onSignUpPressed,
                             style: ElevatedButton.styleFrom(
-                              backgroundColor: const Color(0xFF327BF1),
+                              backgroundColor: AppColors.primaryAlt,
                               foregroundColor: Colors.white,
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(12),
@@ -504,7 +505,7 @@ class _SignUpScreenWidgetState extends State<SignUpScreenWidget> {
                               child: Text(
                                 'Sign In',
                                 style: GoogleFonts.inter(
-                                  color: const Color(0xFF327BF1),
+                                  color: AppColors.primaryAlt,
                                   fontSize: 14,
                                   fontWeight: FontWeight.w600,
                                 ),

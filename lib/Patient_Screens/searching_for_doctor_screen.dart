@@ -362,10 +362,8 @@ class _SearchingForDoctorScreenWidgetState
                                       },
                                       style: ElevatedButton.styleFrom(
                                         elevation: 0,
-                                        backgroundColor: const Color(
-                                          0xFF327BF1,
-                                        ),
-                                        foregroundColor: Colors.white,
+                                        backgroundColor: AppColors.primaryAlt,
+                                        foregroundColor: AppColors.surface,
                                         padding: const EdgeInsets.symmetric(
                                           horizontal: 16,
                                         ),
@@ -413,11 +411,11 @@ class _NoDoctorCard extends StatelessWidget {
     return Container(
       height: 100,
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: AppColors.surface,
         borderRadius: BorderRadius.circular(14),
         boxShadow: const [
           BoxShadow(
-            color: Color(0x1A000000),
+            color: AppColors.cardShadow,
             blurRadius: 6,
             offset: Offset(0, 2),
           ),
@@ -428,7 +426,7 @@ class _NoDoctorCard extends StatelessWidget {
           const SizedBox(width: 14),
           const CircleAvatar(
             radius: 30,
-            backgroundColor: Color(0xFFE9EEF2),
+            backgroundColor: AppColors.chip,
             child: Icon(Icons.person_off, size: 30, color: Color(0xFF8A9AA7)),
           ),
           const SizedBox(width: 14),
@@ -442,7 +440,7 @@ class _NoDoctorCard extends StatelessWidget {
                   style: TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.w700,
-                    color: Color(0xFF222B32),
+                    color: AppColors.textDark,
                   ),
                   overflow: TextOverflow.ellipsis,
                 ),
@@ -452,7 +450,7 @@ class _NoDoctorCard extends StatelessWidget {
                   style: TextStyle(
                     fontSize: 12,
                     fontWeight: FontWeight.w600,
-                    color: Color(0xFF606C77),
+                    color: AppColors.textSubtle,
                   ),
                   overflow: TextOverflow.ellipsis,
                 ),
@@ -466,8 +464,8 @@ class _NoDoctorCard extends StatelessWidget {
               child: OutlinedButton(
                 onPressed: onSelect,
                 style: OutlinedButton.styleFrom(
-                  foregroundColor: const Color(0xFF327BF1),
-                  side: const BorderSide(color: Color(0xFF327BF1)),
+                  foregroundColor: AppColors.primaryAlt,
+                  side: const BorderSide(color: AppColors.primaryAlt),
                   minimumSize: const Size(74, 28),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(8),

@@ -638,7 +638,7 @@ class _CalendarCard extends StatelessWidget {
               TextButton(
                 onPressed: onToday,
                 style: TextButton.styleFrom(
-                  foregroundColor: const Color(0xFF7A5AF5),
+                  foregroundColor: const AppColors.secondary,
                   padding: const EdgeInsets.symmetric(
                     horizontal: 12,
                     vertical: 8,
@@ -656,7 +656,7 @@ class _CalendarCard extends StatelessWidget {
                 child: IconButton(
                   onPressed: onOpenPicker,
                   icon: const Icon(Icons.calendar_today_rounded, size: 18),
-                  color: const Color(0xFF7A5AF5),
+                  color: const AppColors.secondary,
                   tooltip: 'Pick a date',
                 ),
               ),
@@ -762,7 +762,7 @@ class _DayCell extends StatelessWidget {
           height: 34,
           alignment: Alignment.center,
           decoration: BoxDecoration(
-            color: selected ? const Color(0xFF7A5AF5) : const Color(0xFFF4F6F8),
+            color: selected ? const AppColors.secondary : const Color(0xFFF4F6F8),
             borderRadius: BorderRadius.circular(18),
             boxShadow:
                 selected

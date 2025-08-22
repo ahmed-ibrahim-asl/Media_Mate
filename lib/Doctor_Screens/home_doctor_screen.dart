@@ -10,6 +10,7 @@ import 'package:google_fonts/google_fonts.dart';
 
 //----------------------------- app_local ------------------------------
 import 'package:media_mate/Doctor_Screens/patient_info_screen.dart';
+import 'package:media_mate/theme/colors.dart';
 //----------------------------------------------------------------------
 
 class HomeDoctorScreenWidget extends StatefulWidget {
@@ -341,9 +342,8 @@ class _HomeDoctorScreenWidgetState extends State<HomeDoctorScreenWidget> {
                                       },
                                       style: ElevatedButton.styleFrom(
                                         elevation: 0,
-                                        backgroundColor: const Color(
-                                          0xFF1766B9,
-                                        ),
+                                        backgroundColor: AppColors.primary,
+
                                         foregroundColor: Colors.white,
                                         padding: const EdgeInsets.symmetric(
                                           horizontal: 16,

@@ -14,6 +14,7 @@ import 'package:google_fonts/google_fonts.dart';
 
 //----------------------------- app_local ------------------------------
 import 'package:media_mate/Doctor_Screens/tracking_medicine.dart';
+import 'package:media_mate/theme/colors.dart';
 //----------------------------------------------------------------------
 
 class PatientInfoScreen extends StatefulWidget {
@@ -444,9 +445,8 @@ class _PatientInfoScreenState extends State<PatientInfoScreen> {
                                           },
                                           style: ElevatedButton.styleFrom(
                                             elevation: 0,
-                                            backgroundColor: const Color(
-                                              0xFF1766B9,
-                                            ),
+                                            backgroundColor: AppColors.primary,
+
                                             foregroundColor: Colors.white,
                                             padding: const EdgeInsets.symmetric(
                                               horizontal: 14,
@@ -482,9 +482,8 @@ class _PatientInfoScreenState extends State<PatientInfoScreen> {
 
                                           style: ElevatedButton.styleFrom(
                                             elevation: 0,
-                                            backgroundColor: const Color(
-                                              0xFF1766B9,
-                                            ),
+                                            backgroundColor: AppColors.primary,
+
                                             foregroundColor: Colors.white,
                                             padding: const EdgeInsets.symmetric(
                                               horizontal: 14,
@@ -867,9 +866,9 @@ class _EditMedicineDialogState extends State<_EditMedicineDialog> {
                         minWidth: 64,
                       ),
                       borderColor: const Color(0xFFCBD5E1),
-                      selectedBorderColor: const Color(0xFF1766B9),
+                      selectedBorderColor: AppColors.primary,
                       fillColor: const Color(0x1F1766B9),
-                      selectedColor: const Color(0xFF1766B9),
+                      selectedColor: AppColors.primary,
                       color: const Color(0xFF374151),
                       children:
                           _units
@@ -1015,7 +1014,7 @@ class _EditMedicineDialogState extends State<_EditMedicineDialog> {
                           ElevatedButton(
                             onPressed: _pickTime,
                             style: ElevatedButton.styleFrom(
-                              backgroundColor: const Color(0xFF1766B9),
+                              backgroundColor: AppColors.primary,
                               foregroundColor: Colors.white,
                               elevation: 0,
                               fixedSize: const Size(120, 30),
@@ -1046,7 +1045,7 @@ class _EditMedicineDialogState extends State<_EditMedicineDialog> {
                         onChanged:
                             (v) => setState(() => _longTerm = v ?? _longTerm),
                         controlAffinity: ListTileControlAffinity.trailing,
-                        activeColor: const Color(0xFF1766B9),
+                        activeColor: AppColors.primary,
                         dense: true,
                         visualDensity: VisualDensity.compact,
                       ),
@@ -1059,9 +1058,10 @@ class _EditMedicineDialogState extends State<_EditMedicineDialog> {
                               child: OutlinedButton(
                                 onPressed: _pickStartDate,
                                 style: OutlinedButton.styleFrom(
-                                  foregroundColor: const Color(0xFF1766B9),
+                                  foregroundColor: AppColors.primary,
+
                                   side: const BorderSide(
-                                    color: Color(0xFF1766B9),
+                                    color: AppColors.primary,
                                     width: 1.5,
                                   ),
                                   shape: RoundedRectangleBorder(
@@ -1090,9 +1090,10 @@ class _EditMedicineDialogState extends State<_EditMedicineDialog> {
                               child: OutlinedButton(
                                 onPressed: _pickEndDate,
                                 style: OutlinedButton.styleFrom(
-                                  foregroundColor: const Color(0xFF1766B9),
+                                  foregroundColor: AppColors.primary,
+
                                   side: const BorderSide(
-                                    color: Color(0xFF1766B9),
+                                    color: AppColors.primary,
                                     width: 1.5,
                                   ),
                                   shape: RoundedRectangleBorder(
@@ -1325,9 +1326,9 @@ class _AddMedicineDialogState extends State<_AddMedicineDialog> {
         constraints: const BoxConstraints(minHeight: 40, minWidth: 64),
         // colors
         borderColor: const Color(0xFFCBD5E1), // slate-300
-        selectedBorderColor: const Color(0xFF1766B9),
+        selectedBorderColor: AppColors.primary,
         fillColor: const Color(0x1F1766B9), // 12% tint
-        selectedColor: const Color(0xFF1766B9),
+        selectedColor: AppColors.primary,
         color: const Color(0xFF374151), // slate-700
         children:
             _units
@@ -1508,7 +1509,7 @@ class _AddMedicineDialogState extends State<_AddMedicineDialog> {
                           ElevatedButton(
                             onPressed: _pickTime,
                             style: ElevatedButton.styleFrom(
-                              backgroundColor: const Color(0xFF1766B9),
+                              backgroundColor: AppColors.primary,
                               foregroundColor: Colors.white,
                               elevation: 0,
                               fixedSize: const Size(120, 30),
@@ -1539,7 +1540,7 @@ class _AddMedicineDialogState extends State<_AddMedicineDialog> {
                         onChanged:
                             (v) => setState(() => _longTerm = v ?? _longTerm),
                         controlAffinity: ListTileControlAffinity.trailing,
-                        activeColor: const Color(0xFF1766B9),
+                        activeColor: AppColors.primary,
                         dense: true,
                         visualDensity: VisualDensity.compact,
                       ),
@@ -1552,9 +1553,9 @@ class _AddMedicineDialogState extends State<_AddMedicineDialog> {
                               child: OutlinedButton(
                                 onPressed: _pickStartDate,
                                 style: OutlinedButton.styleFrom(
-                                  foregroundColor: const Color(0xFF1766B9),
+                                  foregroundColor: AppColors.primary,
                                   side: const BorderSide(
-                                    color: Color(0xFF1766B9),
+                                    color: AppColors.primary,
                                     width: 1.5,
                                   ),
                                   shape: RoundedRectangleBorder(
@@ -1583,9 +1584,10 @@ class _AddMedicineDialogState extends State<_AddMedicineDialog> {
                               child: OutlinedButton(
                                 onPressed: _pickEndDate,
                                 style: OutlinedButton.styleFrom(
-                                  foregroundColor: const Color(0xFF1766B9),
+                                  foregroundColor: AppColors.primary,
+
                                   side: const BorderSide(
-                                    color: Color(0xFF1766B9),
+                                    color: AppColors.primary,
                                     width: 1.5,
                                   ),
                                   shape: RoundedRectangleBorder(

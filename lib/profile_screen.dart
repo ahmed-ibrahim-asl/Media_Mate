@@ -11,6 +11,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 //-------------------------- google_packages ---------------------------
 import 'package:google_fonts/google_fonts.dart';
 import 'package:google_sign_in/google_sign_in.dart' as gsi;
+import 'package:media_mate/theme/colors.dart';
 //----------------------------------------------------------------------
 
 //-------------------------- state_management --------------------------
@@ -277,7 +278,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
       builder: (dialogCtx) {
         final base = Theme.of(dialogCtx);
         final scheme = base.colorScheme.copyWith(
-          primary: const Color(0xFF1766B9), // brand blue
+          primary: AppColors.primary, // brand blue
           onPrimary: Colors.white,
           surface: Colors.white,
           onSurface: const Color(0xFF222B32),
@@ -289,7 +290,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
             textTheme: GoogleFonts.interTextTheme(base.textTheme),
             textButtonTheme: TextButtonThemeData(
               style: TextButton.styleFrom(
-                foregroundColor: const Color(0xFF1766B9),
+                foregroundColor: AppColors.primary,
                 textStyle: GoogleFonts.inter(fontWeight: FontWeight.w700),
               ),
             ),
@@ -312,7 +313,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       border: Border.all(
                         color:
                             selected
-                                ? const Color(0xFF1766B9)
+                                ? AppColors.primary
                                 : const Color(0xFFE5E7EB),
                         width: 1.5,
                       ),
@@ -323,7 +324,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           icon,
                           color:
                               selected
-                                  ? const Color(0xFF1766B9)
+                                  ? AppColors.primary
                                   : const Color(0xFF9AA3AF),
                         ),
                         const SizedBox(width: 10),
@@ -347,7 +348,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             border: Border.all(
                               color:
                                   selected
-                                      ? const Color(0xFF1766B9)
+                                      ? AppColors.primary
                                       : const Color(0xFF9AA3AF),
                               width: 2,
                             ),
@@ -359,7 +360,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               shape: BoxShape.circle,
                               color:
                                   selected
-                                      ? const Color(0xFF1766B9)
+                                      ? AppColors.primary
                                       : Colors.transparent,
                             ),
                           ),
@@ -401,7 +402,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   ),
                   ElevatedButton(
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: const Color(0xFF1766B9),
+                      backgroundColor: AppColors.primary,
                       foregroundColor: Colors.white,
                       elevation: 0,
                       shape: RoundedRectangleBorder(
@@ -456,7 +457,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
       builder: (context, child) {
         final base = Theme.of(context);
         final scheme = base.colorScheme.copyWith(
-          primary: const Color(0xFF1766B9), // header & selected day
+          primary: AppColors.primary, // header & selected day
           onPrimary: Colors.white, // text on primary
           surface: Colors.white, // dialog background
           onSurface: const Color(0xFF222B32),
@@ -468,7 +469,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
             textTheme: GoogleFonts.interTextTheme(base.textTheme),
             textButtonTheme: TextButtonThemeData(
               style: TextButton.styleFrom(
-                foregroundColor: const Color(0xFF1766B9),
+                foregroundColor: AppColors.primary,
                 textStyle: GoogleFonts.inter(fontWeight: FontWeight.w700),
               ),
             ),
@@ -476,10 +477,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.all(Radius.circular(16)),
               ),
-              headerBackgroundColor: Color(0xFF1766B9),
+              headerBackgroundColor: AppColors.primary,
               headerForegroundColor: Colors.white,
               dayShape: MaterialStatePropertyAll(CircleBorder()),
-              todayForegroundColor: MaterialStatePropertyAll(Color(0xFF1766B9)),
+              todayForegroundColor: MaterialStatePropertyAll(AppColors.primary),
               todayBackgroundColor: MaterialStatePropertyAll(Color(0x1A1766B9)),
             ),
           ),

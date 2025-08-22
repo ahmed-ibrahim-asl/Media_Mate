@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 //-------------------------- flutter_packages --------------------------
 import 'package:google_fonts/google_fonts.dart';
 import 'package:google_sign_in/google_sign_in.dart' as gsi;
+import 'package:media_mate/theme/colors.dart';
 import 'package:provider/provider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -514,7 +515,7 @@ class _SignInScreenWidgetState extends State<SignInScreenWidget> {
                                       ? null
                                       : () => _signInWithEmail(context),
                               style: ElevatedButton.styleFrom(
-                                backgroundColor: const Color(0xFF327BF1),
+                                backgroundColor: AppColors.primaryAlt,
                                 foregroundColor: Colors.white,
                                 elevation: 0,
                                 shape: RoundedRectangleBorder(
@@ -636,7 +637,7 @@ class _SignInScreenWidgetState extends State<SignInScreenWidget> {
                                   child: Text(
                                     'Sign Up',
                                     style: GoogleFonts.inter(
-                                      color: const Color(0xFF327BF1),
+                                      color: AppColors.primaryAlt,
                                       fontSize: 14.0,
                                       fontWeight: FontWeight.w600,
                                     ),
