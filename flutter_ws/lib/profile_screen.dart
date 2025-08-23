@@ -12,7 +12,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:google_sign_in/google_sign_in.dart' as gsi;
 import 'package:media_mate/theme/colors.dart';
-import 'package:media_mate/widgets/editable_field.dart';
+import 'package:media_mate/widgets/common/editable_field.dart';
 //----------------------------------------------------------------------
 
 //-------------------------- state_management --------------------------

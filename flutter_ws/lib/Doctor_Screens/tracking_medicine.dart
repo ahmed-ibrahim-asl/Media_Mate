@@ -10,6 +10,7 @@ import 'package:google_fonts/google_fonts.dart';
 
 //----------------------------- app_local ------------------------------
 import 'package:media_mate/theme/colors.dart';
+import 'package:media_mate/widgets/async/loading_scaffold.dart';
 //----------------------------------------------------------------------
 
 class TrackingMedicineScreen extends StatefulWidget {
@@ -250,7 +251,7 @@ class _TrackingMedicineScreenState extends State<TrackingMedicineScreen> {
   @override
   Widget build(BuildContext context) {
     if (_loadingPatients || _loadingMedMeta) {
-      return const Scaffold(body: Center(child: CircularProgressIndicator()));
+      return const LoadingScaffold(message: 'Loading your profile…');
     }
 
     if (!_doctorCanView()) {
