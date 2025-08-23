@@ -1,4 +1,4 @@
-//-------------------------- flutter_core ----------------------------
+//-------------------------- flutter_core ------------------------------
 import 'package:flutter/material.dart';
 //----------------------------------------------------------------------
 
@@ -6,7 +6,9 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 //----------------------------------------------------------------------
 
+//----------------------------- app_local ------------------------------
 import 'package:media_mate/theme/colors.dart';
+//----------------------------------------------------------------------
 
 class SearchingForDoctorScreenWidget extends StatefulWidget {
   const SearchingForDoctorScreenWidget({super.key});
@@ -122,7 +124,7 @@ class _SearchingForDoctorScreenWidgetState
                         borderRadius: BorderRadius.circular(22),
                         boxShadow: const [
                           BoxShadow(
-                            color: Color(0x33000000),
+                            color: AppColors.cardShadow,
                             blurRadius: 4,
                             offset: Offset(0, 2),
                           ),
@@ -278,7 +280,7 @@ class _SearchingForDoctorScreenWidgetState
                               borderRadius: BorderRadius.circular(14),
                               boxShadow: const [
                                 BoxShadow(
-                                  color: Color(0x1A000000),
+                                  color: AppColors.cardShadow,
                                   blurRadius: 6,
                                   offset: Offset(0, 2),
                                 ),
@@ -289,7 +291,7 @@ class _SearchingForDoctorScreenWidgetState
                                 const SizedBox(width: 14),
                                 CircleAvatar(
                                   radius: 30,
-                                  backgroundColor: const Color(0xFFE9EEF2),
+                                  backgroundColor: AppColors.chip,
                                   backgroundImage:
                                       (doc.photoUrl.isNotEmpty)
                                           ? NetworkImage(doc.photoUrl)
@@ -317,7 +319,7 @@ class _SearchingForDoctorScreenWidgetState
                                         style: const TextStyle(
                                           fontSize: 16,
                                           fontWeight: FontWeight.w700,
-                                          color: Color(0xFF222B32),
+                                          color: AppColors.textDark,
                                         ),
                                         overflow: TextOverflow.ellipsis,
                                       ),
@@ -327,7 +329,7 @@ class _SearchingForDoctorScreenWidgetState
                                         style: const TextStyle(
                                           fontSize: 12,
                                           fontWeight: FontWeight.w600,
-                                          color: Color(0xFF606C77),
+                                          color: AppColors.textSubtle,
                                         ),
                                         overflow: TextOverflow.ellipsis,
                                       ),
@@ -337,7 +339,7 @@ class _SearchingForDoctorScreenWidgetState
                                         style: const TextStyle(
                                           fontSize: 12,
                                           fontWeight: FontWeight.w600,
-                                          color: Color(0xFF606C77),
+                                          color: AppColors.textSubtle,
                                         ),
                                         overflow: TextOverflow.ellipsis,
                                       ),

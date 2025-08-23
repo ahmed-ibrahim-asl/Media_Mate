@@ -110,13 +110,13 @@ class _HomeDoctorScreenWidgetState extends State<HomeDoctorScreenWidget> {
       },
       child: Scaffold(
         key: _scaffoldKey,
-        backgroundColor: Colors.white,
+        backgroundColor: AppColors.surface,
         body: SafeArea(
           top: true,
           child: Container(
             decoration: const BoxDecoration(
               gradient: LinearGradient(
-                colors: [Color(0xFFEAF9FF), Color(0xFFFDFEFF)],
+                colors: [AppColors.bgTop, AppColors.bgBottom],
                 begin: Alignment.topCenter,
                 end: Alignment.bottomCenter,
               ),
@@ -142,11 +142,11 @@ class _HomeDoctorScreenWidgetState extends State<HomeDoctorScreenWidget> {
                         Container(
                           height: 44,
                           decoration: BoxDecoration(
-                            color: Colors.white,
+                            color: AppColors.surface,
                             borderRadius: BorderRadius.circular(22),
                             boxShadow: const [
                               BoxShadow(
-                                color: Color(0x33000000),
+                                color: AppColors.cardShadow,
                                 blurRadius: 4,
                                 offset: Offset(0, 2),
                               ),
@@ -253,11 +253,11 @@ class _HomeDoctorScreenWidgetState extends State<HomeDoctorScreenWidget> {
                           return Container(
                             height: 110,
                             decoration: BoxDecoration(
-                              color: Colors.white,
+                              color: AppColors.surface,
                               borderRadius: BorderRadius.circular(12),
                               boxShadow: const [
                                 BoxShadow(
-                                  color: Color(0x33000000),
+                                  color: AppColors.cardShadow,
                                   blurRadius: 4,
                                   offset: Offset(0, 2),
                                 ),
@@ -268,7 +268,7 @@ class _HomeDoctorScreenWidgetState extends State<HomeDoctorScreenWidget> {
                                 const SizedBox(width: 10),
                                 CircleAvatar(
                                   radius: 45,
-                                  backgroundColor: const Color(0xFFE9EEF2),
+                                  backgroundColor: AppColors.chip,
                                   backgroundImage:
                                       p.photoUrl.isNotEmpty
                                           ? NetworkImage(p.photoUrl)
@@ -298,7 +298,7 @@ class _HomeDoctorScreenWidgetState extends State<HomeDoctorScreenWidget> {
                                         style: GoogleFonts.inter(
                                           fontSize: 16,
                                           fontWeight: FontWeight.w700,
-                                          color: const Color(0xFF222B32),
+                                          color: AppColors.textDark,
                                         ),
                                       ),
                                       const SizedBox(height: 6),
@@ -309,7 +309,7 @@ class _HomeDoctorScreenWidgetState extends State<HomeDoctorScreenWidget> {
                                         style: GoogleFonts.inter(
                                           fontSize: 12,
                                           fontWeight: FontWeight.w600,
-                                          color: const Color(0xFF606C77),
+                                          color: AppColors.textSubtle,
                                         ),
                                       ),
                                     ],
@@ -344,7 +344,7 @@ class _HomeDoctorScreenWidgetState extends State<HomeDoctorScreenWidget> {
                                         elevation: 0,
                                         backgroundColor: AppColors.primary,
 
-                                        foregroundColor: Colors.white,
+                                        foregroundColor: AppColors.surface,
                                         padding: const EdgeInsets.symmetric(
                                           horizontal: 16,
                                         ),

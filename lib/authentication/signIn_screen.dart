@@ -298,7 +298,7 @@ class _SignInScreenWidgetState extends State<SignInScreenWidget> {
       child: Scaffold(
         key: scaffoldKey,
         resizeToAvoidBottomInset: true,
-        backgroundColor: Colors.white,
+        backgroundColor: AppColors.surface,
         body: SafeArea(
           top: true,
           child: Container(
@@ -370,7 +370,7 @@ class _SignInScreenWidgetState extends State<SignInScreenWidget> {
                             description,
                             textAlign: TextAlign.center,
                             style: GoogleFonts.inter(
-                              color: const Color(0xFF6B7280),
+                              color: AppColors.textMuted,
                               fontSize: 16.0,
                               fontWeight: FontWeight.w400,
                             ),
@@ -388,18 +388,18 @@ class _SignInScreenWidgetState extends State<SignInScreenWidget> {
                                   decoration: InputDecoration(
                                     hintText: 'Email address',
                                     hintStyle: GoogleFonts.inter(
-                                      color: const Color(0xFF6B7280),
+                                      color: AppColors.textMuted,
                                     ),
                                     enabledBorder: OutlineInputBorder(
                                       borderSide: const BorderSide(
-                                        color: Color(0xFFE5E7EB),
+                                        color: AppColors.border,
                                         width: 1.0,
                                       ),
                                       borderRadius: BorderRadius.circular(12.0),
                                     ),
                                     focusedBorder: OutlineInputBorder(
                                       borderSide: const BorderSide(
-                                        color: Color(0xFF327BF1),
+                                        color: AppColors.primaryAlt,
                                         width: 1.0,
                                       ),
                                       borderRadius: BorderRadius.circular(12.0),
@@ -434,18 +434,18 @@ class _SignInScreenWidgetState extends State<SignInScreenWidget> {
                                   decoration: InputDecoration(
                                     hintText: 'Password',
                                     hintStyle: GoogleFonts.inter(
-                                      color: const Color(0xFF6B7280),
+                                      color: AppColors.textMuted,
                                     ),
                                     enabledBorder: OutlineInputBorder(
                                       borderSide: const BorderSide(
-                                        color: Color(0xFFE5E7EB),
+                                        color: AppColors.border,
                                         width: 1.0,
                                       ),
                                       borderRadius: BorderRadius.circular(12.0),
                                     ),
                                     focusedBorder: OutlineInputBorder(
                                       borderSide: const BorderSide(
-                                        color: Color(0xFF327BF1),
+                                        color: AppColors.primaryAlt,
                                         width: 1.0,
                                       ),
                                       borderRadius: BorderRadius.circular(12.0),
@@ -516,7 +516,7 @@ class _SignInScreenWidgetState extends State<SignInScreenWidget> {
                                       : () => _signInWithEmail(context),
                               style: ElevatedButton.styleFrom(
                                 backgroundColor: AppColors.primaryAlt,
-                                foregroundColor: Colors.white,
+                                foregroundColor: AppColors.surface,
                                 elevation: 0,
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(12.0),
@@ -530,7 +530,7 @@ class _SignInScreenWidgetState extends State<SignInScreenWidget> {
                                         child: CircularProgressIndicator(
                                           strokeWidth: 2,
                                           valueColor: AlwaysStoppedAnimation(
-                                            Colors.white,
+                                            AppColors.surface,
                                           ),
                                         ),
                                       )
@@ -549,7 +549,7 @@ class _SignInScreenWidgetState extends State<SignInScreenWidget> {
                               Expanded(
                                 child: Container(
                                   height: 1.0,
-                                  color: const Color(0xFFE5E7EB),
+                                  color: AppColors.border,
                                 ),
                               ),
                               Padding(
@@ -559,7 +559,7 @@ class _SignInScreenWidgetState extends State<SignInScreenWidget> {
                                 child: Text(
                                   'or',
                                   style: GoogleFonts.inter(
-                                    color: const Color(0xFF6B7280),
+                                    color: AppColors.textMuted,
                                     fontSize: 14.0,
                                   ),
                                 ),
@@ -567,7 +567,7 @@ class _SignInScreenWidgetState extends State<SignInScreenWidget> {
                               Expanded(
                                 child: Container(
                                   height: 1.0,
-                                  color: const Color(0xFFE5E7EB),
+                                  color: AppColors.border,
                                 ),
                               ),
                             ],
@@ -593,7 +593,7 @@ class _SignInScreenWidgetState extends State<SignInScreenWidget> {
                               style: OutlinedButton.styleFrom(
                                 backgroundColor: const Color(0xFFF9FAFB),
                                 side: const BorderSide(
-                                  color: Color(0xFFE5E7EB),
+                                  color: AppColors.border,
                                   width: 1.0,
                                 ),
                                 shape: RoundedRectangleBorder(
@@ -605,7 +605,7 @@ class _SignInScreenWidgetState extends State<SignInScreenWidget> {
                                 style: GoogleFonts.inter(
                                   fontSize: 20.0,
                                   fontWeight: FontWeight.w600,
-                                  color: const Color(0xFF111827),
+                                  color: AppColors.text,
                                 ),
                               ),
                             ),
@@ -619,7 +619,7 @@ class _SignInScreenWidgetState extends State<SignInScreenWidget> {
                                 Text(
                                   "Don't have an account?",
                                   style: GoogleFonts.inter(
-                                    color: const Color(0xFF6B7280),
+                                    color: AppColors.textMuted,
                                     fontSize: 14.0,
                                   ),
                                 ),

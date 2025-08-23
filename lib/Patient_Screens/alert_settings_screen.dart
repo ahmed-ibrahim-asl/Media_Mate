@@ -6,11 +6,12 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:media_mate/theme/colors.dart';
 //----------------------------------------------------------------------
 
 //----------------------------- app_local ------------------------------
 import '../Patient_Screens/notifications/notification_service.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 //----------------------------------------------------------------------
 
 class AlertSettingsScreen extends StatefulWidget {
@@ -25,7 +26,7 @@ class AlertSettingsScreen extends StatefulWidget {
 
 class _AlertSettingsScreenState extends State<AlertSettingsScreen> {
   static const _prefsKeyEnabled = 'alerts_enabled_v1';
-  static const _primary = Color(0xFF327BF1);
+  static const _primary = AppColors.primaryAlt;
 
   bool _enabled = false;
   bool _busy = false;
@@ -145,17 +146,17 @@ class _AlertSettingsScreenState extends State<AlertSettingsScreen> {
     final titleStyle = GoogleFonts.inter(
       fontSize: 22,
       fontWeight: FontWeight.w700,
-      color: const Color(0xFF222B32),
+      color: AppColors.textDark,
     );
 
     return Scaffold(
       appBar: AppBar(
         title: const Text('Alert Settings'),
         elevation: 0,
-        backgroundColor: Colors.white,
-        foregroundColor: const Color(0xFF222B32),
+        backgroundColor: AppColors.surface,
+        foregroundColor: AppColors.textDark,
       ),
-      backgroundColor: Colors.white,
+      backgroundColor: AppColors.surface,
       body: SafeArea(
         child: ListView(
           padding: const EdgeInsets.fromLTRB(20, 16, 20, 28),
@@ -167,7 +168,7 @@ class _AlertSettingsScreenState extends State<AlertSettingsScreen> {
               'We will schedule daily notifications at your chosen times.',
               style: GoogleFonts.inter(
                 fontSize: 14,
-                color: const Color(0xFF606C77),
+                color: AppColors.textSubtle,
               ),
             ),
             const SizedBox(height: 16),
@@ -176,9 +177,9 @@ class _AlertSettingsScreenState extends State<AlertSettingsScreen> {
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
               decoration: BoxDecoration(
-                color: Colors.white,
+                color: AppColors.surface,
                 borderRadius: BorderRadius.circular(14),
-                border: Border.all(color: const Color(0xFFE5E7EB)),
+                border: Border.all(color: AppColors.border),
                 boxShadow: const [
                   BoxShadow(
                     color: Color(0x14000000),
@@ -200,7 +201,7 @@ class _AlertSettingsScreenState extends State<AlertSettingsScreen> {
                       style: GoogleFonts.inter(
                         fontSize: 16,
                         fontWeight: FontWeight.w600,
-                        color: const Color(0xFF222B32),
+                        color: AppColors.textDark,
                       ),
                     ),
                   ),
@@ -236,7 +237,7 @@ class _AlertSettingsScreenState extends State<AlertSettingsScreen> {
                 onPressed: _busy || !_enabled ? null : _scheduleFromFirestore,
                 style: ElevatedButton.styleFrom(
                   backgroundColor: _primary,
-                  foregroundColor: Colors.white,
+                  foregroundColor: AppColors.surface,
                   elevation: 0,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(12),
@@ -255,7 +256,7 @@ class _AlertSettingsScreenState extends State<AlertSettingsScreen> {
                           child: CircularProgressIndicator(
                             strokeWidth: 2,
                             valueColor: AlwaysStoppedAnimation<Color>(
-                              Colors.white,
+                              AppColors.surface,
                             ),
                           ),
                         )

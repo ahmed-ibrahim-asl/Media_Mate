@@ -8,6 +8,10 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_fonts/google_fonts.dart';
 //----------------------------------------------------------------------
 
+//----------------------------- app_local ------------------------------
+import 'package:media_mate/theme/colors.dart';
+//----------------------------------------------------------------------
+
 class TrackingMedicineScreen extends StatefulWidget {
   const TrackingMedicineScreen({
     super.key,
@@ -251,7 +255,7 @@ class _TrackingMedicineScreenState extends State<TrackingMedicineScreen> {
 
     if (!_doctorCanView()) {
       return Scaffold(
-        backgroundColor: Colors.white,
+        backgroundColor: AppColors.surface,
         body: SafeArea(
           child: Center(
             child: Padding(
@@ -270,12 +274,12 @@ class _TrackingMedicineScreenState extends State<TrackingMedicineScreen> {
     final stream = _logsStreamForMonth();
 
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: AppColors.surface,
       body: SafeArea(
         child: Container(
           decoration: const BoxDecoration(
             gradient: LinearGradient(
-              colors: [Color(0xFFEAF9FF), Color(0xFFFDFEFF)],
+              colors: [AppColors.bgTop, AppColors.bgBottom],
               begin: Alignment.topCenter,
               end: Alignment.bottomCenter,
             ),
@@ -315,7 +319,7 @@ class _TrackingMedicineScreenState extends State<TrackingMedicineScreen> {
                               _screenTitle,
                               style: GoogleFonts.inter(
                                 fontSize: 14,
-                                color: const Color(0xFF6B7280),
+                                color: AppColors.textMuted,
                                 fontWeight: FontWeight.w600,
                               ),
                             ),
@@ -452,11 +456,11 @@ class _TrackingMedicineScreenState extends State<TrackingMedicineScreen> {
             Container(
               width: double.infinity,
               decoration: BoxDecoration(
-                color: Colors.white,
+                color: AppColors.surface,
                 borderRadius: BorderRadius.circular(16),
                 boxShadow: const [
                   BoxShadow(
-                    color: Color(0x1A000000),
+                    color: AppColors.cardShadow,
                     blurRadius: 10,
                     offset: Offset(0, 4),
                   ),
@@ -527,9 +531,9 @@ class _TrackingMedicineScreenState extends State<TrackingMedicineScreen> {
                       if (_scheduledTimes.isEmpty) {
                         bubble = null;
                       } else if (isMissed) {
-                        bubble = const Color(0xFFEF4444); // red by default
+                        bubble = AppColors.error; // red by default
                       } else if (isTaken) {
-                        bubble = const Color(0xFF22C55E); // green
+                        bubble = AppColors.success; // green
                       }
 
                       return GestureDetector(
@@ -589,8 +593,8 @@ class _TrackingMedicineScreenState extends State<TrackingMedicineScreen> {
                                 fontWeight: FontWeight.w700,
                                 color:
                                     bubble == null
-                                        ? const Color(0xFF111827)
-                                        : Colors.white,
+                                        ? AppColors.text
+                                        : AppColors.surface,
                               ),
                             ),
                           ),
@@ -608,11 +612,11 @@ class _TrackingMedicineScreenState extends State<TrackingMedicineScreen> {
             Container(
               width: double.infinity,
               decoration: BoxDecoration(
-                color: Colors.white,
+                color: AppColors.surface,
                 borderRadius: BorderRadius.circular(16),
                 boxShadow: const [
                   BoxShadow(
-                    color: Color(0x1A000000),
+                    color: AppColors.cardShadow,
                     blurRadius: 10,
                     offset: Offset(0, 4),
                   ),
@@ -633,14 +637,14 @@ class _TrackingMedicineScreenState extends State<TrackingMedicineScreen> {
                   const SizedBox(height: 8),
                   Row(
                     children: [
-                      const _LegendDot(color: Color(0xFF22C55E)),
+                      const _LegendDot(color: AppColors.success),
                       const SizedBox(width: 6),
                       Text(
                         'Taken: $takenCount',
                         style: GoogleFonts.inter(fontWeight: FontWeight.w700),
                       ),
                       const SizedBox(width: 18),
-                      const _LegendDot(color: Color(0xFFEF4444)),
+                      const _LegendDot(color: AppColors.error),
                       const SizedBox(width: 6),
                       Text(
                         'Missed: $missedCount',
@@ -656,7 +660,7 @@ class _TrackingMedicineScreenState extends State<TrackingMedicineScreen> {
                       minHeight: 16,
                       backgroundColor: const Color(0xFFD1D5DB),
                       valueColor: const AlwaysStoppedAnimation<Color>(
-                        Color(0xFF22C55E),
+                        AppColors.success,
                       ),
                     ),
                   ),
@@ -707,7 +711,7 @@ class _TrackingMedicineScreenState extends State<TrackingMedicineScreen> {
                 return ListTile(
                   leading: const Icon(
                     Icons.check_circle,
-                    color: Color(0xFF22C55E),
+                    color: AppColors.success,
                   ),
                   title: Text(name, style: GoogleFonts.inter()),
                   subtitle: const Text('Took medicine'),
@@ -737,7 +741,7 @@ class _TrackingMedicineScreenState extends State<TrackingMedicineScreen> {
               builder: (context, snap) {
                 final name = (snap.data ?? p['patient_id'] ?? '').toString();
                 return ListTile(
-                  leading: const Icon(Icons.cancel, color: Color(0xFFEF4444)),
+                  leading: const Icon(Icons.cancel, color: AppColors.error),
                   title: Text(name, style: GoogleFonts.inter()),
                   subtitle: const Text('Missed medicine'),
                   dense: true,
@@ -787,7 +791,7 @@ class _Dow extends StatelessWidget {
           text,
           style: GoogleFonts.inter(
             fontSize: 12,
-            color: const Color(0xFF6B7280),
+            color: AppColors.textMuted,
             fontWeight: FontWeight.w700,
           ),
         ),

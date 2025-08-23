@@ -112,12 +112,12 @@ class _PatientInfoScreenState extends State<PatientInfoScreen> {
     final medsCol = FirebaseFirestore.instance.collection('Medicine');
 
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: AppColors.surface,
       body: SafeArea(
         child: Container(
           decoration: const BoxDecoration(
             gradient: LinearGradient(
-              colors: [Color(0xFFEAF9FF), Color(0xFFFDFEFF)],
+              colors: [AppColors.bgTop, AppColors.bgBottom],
               begin: Alignment.topCenter,
               end: Alignment.bottomCenter,
             ),
@@ -161,11 +161,11 @@ class _PatientInfoScreenState extends State<PatientInfoScreen> {
                           const SizedBox(height: 6),
                           Container(
                             decoration: BoxDecoration(
-                              color: Colors.white,
+                              color: AppColors.surface,
                               borderRadius: BorderRadius.circular(16),
                               boxShadow: const [
                                 BoxShadow(
-                                  color: Color(0x1A000000),
+                                  color: AppColors.cardShadow,
                                   blurRadius: 10,
                                   offset: Offset(0, 4),
                                 ),
@@ -176,7 +176,7 @@ class _PatientInfoScreenState extends State<PatientInfoScreen> {
                               children: [
                                 CircleAvatar(
                                   radius: 36,
-                                  backgroundColor: const Color(0xFFE9EEF2),
+                                  backgroundColor: AppColors.chip,
                                   backgroundImage:
                                       photoUrl.isNotEmpty
                                           ? NetworkImage(photoUrl)
@@ -203,7 +203,7 @@ class _PatientInfoScreenState extends State<PatientInfoScreen> {
                                         style: GoogleFonts.inter(
                                           fontSize: 16,
                                           fontWeight: FontWeight.w700,
-                                          color: const Color(0xFF111827),
+                                          color: AppColors.text,
                                         ),
                                       ),
                                       const SizedBox(height: 2),
@@ -214,7 +214,7 @@ class _PatientInfoScreenState extends State<PatientInfoScreen> {
                                         ].join(', '),
                                         style: GoogleFonts.inter(
                                           fontSize: 12,
-                                          color: const Color(0xFF6B7280),
+                                          color: AppColors.textMuted,
                                           fontWeight: FontWeight.w600,
                                         ),
                                       ),
@@ -224,7 +224,7 @@ class _PatientInfoScreenState extends State<PatientInfoScreen> {
                                           phone,
                                           style: GoogleFonts.inter(
                                             fontSize: 12,
-                                            color: const Color(0xFF111827),
+                                            color: AppColors.text,
                                           ),
                                         ),
                                       ],
@@ -234,7 +234,7 @@ class _PatientInfoScreenState extends State<PatientInfoScreen> {
                                           email,
                                           style: GoogleFonts.inter(
                                             fontSize: 12,
-                                            color: const Color(0xFF111827),
+                                            color: AppColors.text,
                                           ),
                                         ),
                                       ],
@@ -296,7 +296,7 @@ class _PatientInfoScreenState extends State<PatientInfoScreen> {
                             child: Text(
                               'No medications found.',
                               style: GoogleFonts.inter(
-                                color: const Color(0xFF6B7280),
+                                color: AppColors.textMuted,
                               ),
                             ),
                           ),
@@ -357,11 +357,11 @@ class _PatientInfoScreenState extends State<PatientInfoScreen> {
 
                             return Container(
                               decoration: BoxDecoration(
-                                color: Colors.white,
+                                color: AppColors.surface,
                                 borderRadius: BorderRadius.circular(12),
                                 boxShadow: const [
                                   BoxShadow(
-                                    color: Color(0x1A000000),
+                                    color: AppColors.cardShadow,
                                     blurRadius: 10,
                                     offset: Offset(0, 4),
                                   ),
@@ -387,7 +387,7 @@ class _PatientInfoScreenState extends State<PatientInfoScreen> {
                                           style: GoogleFonts.inter(
                                             fontSize: 16,
                                             fontWeight: FontWeight.w700,
-                                            color: const Color(0xFF111827),
+                                            color: AppColors.text,
                                           ),
                                         ),
                                         const SizedBox(height: 6),
@@ -396,7 +396,7 @@ class _PatientInfoScreenState extends State<PatientInfoScreen> {
                                           style: GoogleFonts.inter(
                                             fontSize: 12,
                                             fontWeight: FontWeight.w600,
-                                            color: const Color(0xFF374151),
+                                            color: AppColors.slate700,
                                           ),
                                         ),
                                         const SizedBox(height: 4),
@@ -404,7 +404,7 @@ class _PatientInfoScreenState extends State<PatientInfoScreen> {
                                           secondary,
                                           style: GoogleFonts.inter(
                                             fontSize: 12,
-                                            color: const Color(0xFF6B7280),
+                                            color: AppColors.textMuted,
                                             fontWeight: FontWeight.w600,
                                           ),
                                         ),
@@ -415,7 +415,7 @@ class _PatientInfoScreenState extends State<PatientInfoScreen> {
                                           overflow: TextOverflow.ellipsis,
                                           style: GoogleFonts.inter(
                                             fontSize: 12,
-                                            color: const Color(0xFF6B7280),
+                                            color: AppColors.textMuted,
                                           ),
                                         ),
                                       ],
@@ -447,7 +447,7 @@ class _PatientInfoScreenState extends State<PatientInfoScreen> {
                                             elevation: 0,
                                             backgroundColor: AppColors.primary,
 
-                                            foregroundColor: Colors.white,
+                                            foregroundColor: AppColors.surface,
                                             padding: const EdgeInsets.symmetric(
                                               horizontal: 14,
                                             ),
@@ -484,7 +484,7 @@ class _PatientInfoScreenState extends State<PatientInfoScreen> {
                                             elevation: 0,
                                             backgroundColor: AppColors.primary,
 
-                                            foregroundColor: Colors.white,
+                                            foregroundColor: AppColors.surface,
                                             padding: const EdgeInsets.symmetric(
                                               horizontal: 14,
                                             ),
@@ -525,7 +525,7 @@ class _PatientInfoScreenState extends State<PatientInfoScreen> {
           shape: BoxShape.circle,
           boxShadow: [
             BoxShadow(
-              color: Color(0x33000000),
+              color: AppColors.cardShadow,
               blurRadius: 18,
               offset: Offset(0, 8),
             ),
@@ -551,7 +551,7 @@ class _PatientInfoScreenState extends State<PatientInfoScreen> {
                   width: 35,
                   height: 8,
                   decoration: BoxDecoration(
-                    color: Colors.white,
+                    color: AppColors.surface,
                     borderRadius: BorderRadius.circular(20),
                   ),
                 ),
@@ -561,7 +561,7 @@ class _PatientInfoScreenState extends State<PatientInfoScreen> {
                     width: 35,
                     height: 8,
                     decoration: BoxDecoration(
-                      color: Colors.white,
+                      color: AppColors.surface,
                       borderRadius: BorderRadius.circular(20),
                     ),
                   ),
@@ -820,7 +820,7 @@ class _EditMedicineDialogState extends State<_EditMedicineDialog> {
   @override
   Widget build(BuildContext context) {
     return Dialog(
-      backgroundColor: Colors.white,
+      backgroundColor: AppColors.surface,
       insetPadding: const EdgeInsets.symmetric(horizontal: 24),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
       child: ConstrainedBox(
@@ -869,7 +869,7 @@ class _EditMedicineDialogState extends State<_EditMedicineDialog> {
                       selectedBorderColor: AppColors.primary,
                       fillColor: const Color(0x1F1766B9),
                       selectedColor: AppColors.primary,
-                      color: const Color(0xFF374151),
+                      color: AppColors.slate700,
                       children:
                           _units
                               .map(
@@ -994,7 +994,7 @@ class _EditMedicineDialogState extends State<_EditMedicineDialog> {
                                         Text(
                                           'No times added',
                                           style: GoogleFonts.inter(
-                                            color: const Color(0xFF6B7280),
+                                            color: AppColors.textMuted,
                                           ),
                                         ),
                                       ]
@@ -1015,7 +1015,7 @@ class _EditMedicineDialogState extends State<_EditMedicineDialog> {
                             onPressed: _pickTime,
                             style: ElevatedButton.styleFrom(
                               backgroundColor: AppColors.primary,
-                              foregroundColor: Colors.white,
+                              foregroundColor: AppColors.surface,
                               elevation: 0,
                               fixedSize: const Size(120, 30),
                               padding: const EdgeInsets.symmetric(
@@ -1128,7 +1128,7 @@ class _EditMedicineDialogState extends State<_EditMedicineDialog> {
                           onPressed: _save,
                           style: ElevatedButton.styleFrom(
                             backgroundColor: const Color(0xFF007800),
-                            foregroundColor: Colors.white,
+                            foregroundColor: AppColors.surface,
                             elevation: 0,
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(8),
@@ -1329,7 +1329,7 @@ class _AddMedicineDialogState extends State<_AddMedicineDialog> {
         selectedBorderColor: AppColors.primary,
         fillColor: const Color(0x1F1766B9), // 12% tint
         selectedColor: AppColors.primary,
-        color: const Color(0xFF374151), // slate-700
+        color: AppColors.slate700, // slate-700
         children:
             _units
                 .map(
@@ -1352,7 +1352,7 @@ class _AddMedicineDialogState extends State<_AddMedicineDialog> {
   @override
   Widget build(BuildContext context) {
     return Dialog(
-      backgroundColor: Colors.white,
+      backgroundColor: AppColors.surface,
       insetPadding: const EdgeInsets.symmetric(horizontal: 24),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
       child: ConstrainedBox(
@@ -1489,7 +1489,7 @@ class _AddMedicineDialogState extends State<_AddMedicineDialog> {
                                         Text(
                                           'No times added',
                                           style: GoogleFonts.inter(
-                                            color: const Color(0xFF6B7280),
+                                            color: AppColors.textMuted,
                                           ),
                                         ),
                                       ]
@@ -1510,7 +1510,7 @@ class _AddMedicineDialogState extends State<_AddMedicineDialog> {
                             onPressed: _pickTime,
                             style: ElevatedButton.styleFrom(
                               backgroundColor: AppColors.primary,
-                              foregroundColor: Colors.white,
+                              foregroundColor: AppColors.surface,
                               elevation: 0,
                               fixedSize: const Size(120, 30),
                               padding: const EdgeInsets.symmetric(
@@ -1622,7 +1622,7 @@ class _AddMedicineDialogState extends State<_AddMedicineDialog> {
                           onPressed: _save,
                           style: ElevatedButton.styleFrom(
                             backgroundColor: const Color(0xFF007800),
-                            foregroundColor: Colors.white,
+                            foregroundColor: AppColors.surface,
                             elevation: 0,
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(8),

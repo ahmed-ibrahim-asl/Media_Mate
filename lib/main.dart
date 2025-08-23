@@ -1,5 +1,7 @@
+//-------------------------- flutter_core ------------------------------
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart'; // orientation lock
+//----------------------------------------------------------------------
 
 //------------------------ third_part_packages -------------------------
 import 'package:google_fonts/google_fonts.dart';

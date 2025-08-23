@@ -10,6 +10,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 //----------------------------- app_local ------------------------------
 import 'package:media_mate/services/bluetooth_service.dart';
+import 'package:media_mate/theme/colors.dart';
 //----------------------------------------------------------------------
 
 class HomePatientScreen extends StatefulWidget {
@@ -250,7 +251,7 @@ class _HomePatientScreenState extends State<HomePatientScreen> {
         child: Container(
           decoration: const BoxDecoration(
             gradient: LinearGradient(
-              colors: [Color(0xFFEAF9FF), Color(0xFFFDFEFF)],
+              colors: [AppColors.bgTop, AppColors.bgBottom],
               begin: Alignment.topCenter,
               end: Alignment.bottomCenter,
             ),
@@ -280,7 +281,7 @@ class _HomePatientScreenState extends State<HomePatientScreen> {
                 Text(
                   'Medicines Today',
                   style: GoogleFonts.inter(
-                    color: const Color(0xFF222B32),
+                    color: AppColors.textDark,
                     fontSize: 20,
                     fontWeight: FontWeight.w700,
                   ),
@@ -360,7 +361,7 @@ class _HomePatientScreenState extends State<HomePatientScreen> {
                                   child: Text(
                                     'No medicines scheduled for this day.',
                                     style: GoogleFonts.inter(
-                                      color: const Color(0xFF606C77),
+                                      color: AppColors.textSubtle,
                                     ),
                                   ),
                                 );
@@ -475,7 +476,7 @@ class _HomePatientScreenState extends State<HomePatientScreen> {
                                                 activeColor: const Color(
                                                   0xFF7A5AF5,
                                                 ),
-                                                checkColor: Colors.white,
+                                                checkColor: AppColors.surface,
                                                 materialTapTargetSize:
                                                     MaterialTapTargetSize
                                                         .shrinkWrap,
@@ -508,7 +509,7 @@ class _HomePatientScreenState extends State<HomePatientScreen> {
                                         style: GoogleFonts.inter(
                                           fontSize: 16,
                                           fontWeight: FontWeight.w700,
-                                          color: Colors.white,
+                                          color: AppColors.surface,
                                         ),
                                       ),
                                     ),
@@ -611,11 +612,11 @@ class _CalendarCard extends StatelessWidget {
 
     return Container(
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: AppColors.surface,
         borderRadius: BorderRadius.circular(16),
         boxShadow: const [
           BoxShadow(
-            color: Color(0x1A000000),
+            color: AppColors.cardShadow,
             blurRadius: 8,
             offset: Offset(0, 3),
           ),
@@ -631,14 +632,14 @@ class _CalendarCard extends StatelessWidget {
                 style: GoogleFonts.inter(
                   fontSize: 18,
                   fontWeight: FontWeight.w700,
-                  color: const Color(0xFF222B32),
+                  color: AppColors.textDark,
                 ),
               ),
               const Spacer(),
               TextButton(
                 onPressed: onToday,
                 style: TextButton.styleFrom(
-                  foregroundColor: const AppColors.secondary,
+                  foregroundColor: AppColors.secondary,
                   padding: const EdgeInsets.symmetric(
                     horizontal: 12,
                     vertical: 8,
@@ -656,7 +657,7 @@ class _CalendarCard extends StatelessWidget {
                 child: IconButton(
                   onPressed: onOpenPicker,
                   icon: const Icon(Icons.calendar_today_rounded, size: 18),
-                  color: const AppColors.secondary,
+                  color: AppColors.secondary,
                   tooltip: 'Pick a date',
                 ),
               ),
@@ -762,13 +763,13 @@ class _DayCell extends StatelessWidget {
           height: 34,
           alignment: Alignment.center,
           decoration: BoxDecoration(
-            color: selected ? const AppColors.secondary : const Color(0xFFF4F6F8),
+            color: selected ? AppColors.secondary : const Color(0xFFF4F6F8),
             borderRadius: BorderRadius.circular(18),
             boxShadow:
                 selected
                     ? const [
                       BoxShadow(
-                        color: Color(0x33000000),
+                        color: AppColors.cardShadow,
                         blurRadius: 6,
                         offset: Offset(0, 2),
                       ),
@@ -780,7 +781,7 @@ class _DayCell extends StatelessWidget {
             style: GoogleFonts.inter(
               fontSize: 14,
               fontWeight: FontWeight.w700,
-              color: selected ? Colors.white : const Color(0xFF222B32),
+              color: selected ? AppColors.surface : AppColors.textDark,
             ),
           ),
         ),

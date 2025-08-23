@@ -274,7 +274,7 @@ class _MedicinePatientScreenState extends State<MedicinePatientScreen> {
                                 borderRadius: BorderRadius.circular(12),
                                 boxShadow: const [
                                   BoxShadow(
-                                    color: Color(0x33000000),
+                                    color: AppColors.cardShadow,
                                     blurRadius: 4,
                                     offset: Offset(0, 2),
                                   ),
@@ -345,7 +345,7 @@ class _MedicinePatientScreenState extends State<MedicinePatientScreen> {
                                             style: GoogleFonts.inter(
                                               fontSize: 12,
                                               fontWeight: FontWeight.w600,
-                                              color: const Color(0xFF606C77),
+                                              color: AppColors.textSubtle,
                                             ),
                                           ),
                                           const SizedBox(height: 6),
@@ -383,7 +383,7 @@ class _MedicinePatientScreenState extends State<MedicinePatientScreen> {
           shape: BoxShape.circle,
           boxShadow: [
             BoxShadow(
-              color: Color(0x33000000),
+              color: AppColors.cardShadow,
               blurRadius: 18,
               offset: Offset(0, 8),
             ),
@@ -691,7 +691,7 @@ class _AddMedicineDialogState extends State<_AddMedicineDialog> {
         selectedBorderColor: AppColors.primary,
         fillColor: const Color(0x1F1766B9),
         selectedColor: AppColors.primary,
-        color: const Color(0xFF374151),
+        color: AppColors.slate700,
         children:
             _units
                 .map(
@@ -853,7 +853,7 @@ class _AddMedicineDialogState extends State<_AddMedicineDialog> {
                                         Text(
                                           'No times added',
                                           style: GoogleFonts.inter(
-                                            color: const Color(0xFF6B7280),
+                                            color: AppColors.textMuted,
                                           ),
                                         ),
                                       ]

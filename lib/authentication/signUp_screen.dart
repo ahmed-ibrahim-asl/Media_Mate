@@ -227,7 +227,7 @@ class _SignUpScreenWidgetState extends State<SignUpScreenWidget> {
       },
       child: Scaffold(
         key: _scaffoldKey,
-        backgroundColor: Colors.white,
+        backgroundColor: AppColors.surface,
         body: SafeArea(
           top: true,
           child: Container(
@@ -462,7 +462,7 @@ class _SignUpScreenWidgetState extends State<SignUpScreenWidget> {
                             onPressed: _busy ? null : _onSignUpPressed,
                             style: ElevatedButton.styleFrom(
                               backgroundColor: AppColors.primaryAlt,
-                              foregroundColor: Colors.white,
+                              foregroundColor: AppColors.surface,
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(12),
                               ),
@@ -495,7 +495,7 @@ class _SignUpScreenWidgetState extends State<SignUpScreenWidget> {
                             Text(
                               'Already have an account?',
                               style: GoogleFonts.inter(
-                                color: const Color(0xFF6B7280),
+                                color: AppColors.textMuted,
                                 fontSize: 14,
                               ),
                             ),
@@ -558,13 +558,13 @@ class _Input extends StatelessWidget {
       obscureText: obscure,
       decoration: InputDecoration(
         hintText: hint,
-        hintStyle: GoogleFonts.inter(color: const Color(0xFF6B7280)),
+        hintStyle: GoogleFonts.inter(color: AppColors.textMuted),
         enabledBorder: OutlineInputBorder(
-          borderSide: const BorderSide(color: Color(0xFFE5E7EB), width: 1),
+          borderSide: const BorderSide(color: AppColors.border, width: 1),
           borderRadius: BorderRadius.circular(12),
         ),
         focusedBorder: OutlineInputBorder(
-          borderSide: const BorderSide(color: Color(0xFF327BF1), width: 1),
+          borderSide: const BorderSide(color: AppColors.primaryAlt, width: 1),
           borderRadius: BorderRadius.circular(12),
         ),
         errorBorder: OutlineInputBorder(

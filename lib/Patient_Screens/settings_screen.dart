@@ -75,7 +75,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
   TextStyle get _rowHintStyle => GoogleFonts.inter(
     fontSize: 12,
-    color: const Color(0xFF606C77),
+    color: AppColors.textSubtle,
     fontWeight: FontWeight.w500,
   );
 
@@ -360,7 +360,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
         child: Container(
           decoration: const BoxDecoration(
             gradient: LinearGradient(
-              colors: [Color(0xFFEAF9FF), Color(0xFFFDFEFF)],
+              colors: [AppColors.bgTop, AppColors.bgBottom],
               begin: Alignment.topCenter,
               end: Alignment.bottomCenter,
             ),

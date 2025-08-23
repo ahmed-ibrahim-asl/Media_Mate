@@ -1,4 +1,6 @@
+//-------------------------- flutter_core ------------------------------
 import 'package:flutter/material.dart';
+//----------------------------------------------------------------------
 
 class AppColors {
   // Brand
@@ -16,7 +18,7 @@ class AppColors {
   static const textMuted = Color(0xFF6B7280);
   static const textSubtle = Color(0xFF606C77);
   static const slate700 = Color(0xFF374151);
-
+  /////////////////////////////////////////////////////////
   // Surfaces & borders
   static const surface = Colors.white;
   static const chip = Color(0xFFE9EEF2);

@@ -10,6 +10,7 @@ import 'package:provider/provider.dart';
 //----------------------------- app_local ------------------------------
 import '/app_state.dart';
 import '/authentication/signIn_screen.dart'; // for SignInScreenWidget.routePath
+import 'package:media_mate/theme/colors.dart';
 //----------------------------------------------------------------------
 
 class SelectUserScreenWidget extends StatefulWidget {
@@ -65,7 +66,7 @@ class _SelectUserScreenWidgetState extends State<SelectUserScreenWidget> {
       },
       child: Scaffold(
         key: scaffoldKey,
-        backgroundColor: Colors.white,
+        backgroundColor: AppColors.surface,
         body: SafeArea(
           top: true,
           child: Container(
@@ -133,7 +134,7 @@ class _SelectUserScreenWidgetState extends State<SelectUserScreenWidget> {
                                   color:
                                       isDoctor
                                           ? const Color(0xFF56C9FF)
-                                          : Colors.white,
+                                          : AppColors.surface,
                                   borderRadius: const BorderRadius.all(
                                     Radius.circular(14.0),
                                   ),
@@ -219,7 +220,7 @@ class _SelectUserScreenWidgetState extends State<SelectUserScreenWidget> {
                                   color:
                                       isPatient
                                           ? const Color(0xFF56C9FF)
-                                          : Colors.white,
+                                          : AppColors.surface,
                                   borderRadius: const BorderRadius.all(
                                     Radius.circular(14.0),
                                   ),
@@ -301,7 +302,7 @@ class _SelectUserScreenWidgetState extends State<SelectUserScreenWidget> {
                                       boxShadow: [
                                         BoxShadow(
                                           blurRadius: 4.0,
-                                          color: Color(0x33000000),
+                                          color: AppColors.cardShadow,
                                           offset: Offset(0.0, 2.0),
                                         ),
                                       ],
@@ -315,7 +316,7 @@ class _SelectUserScreenWidgetState extends State<SelectUserScreenWidget> {
                                       onTap: _goToSignIn,
                                       child: const Icon(
                                         Icons.arrow_forward_ios_rounded,
-                                        color: Colors.white,
+                                        color: AppColors.surface,
                                         size: 45.0,
                                       ),
                                     ),

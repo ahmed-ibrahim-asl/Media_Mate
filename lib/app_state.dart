@@ -1,5 +1,6 @@
-// lib/app_state.dart
+//-------------------------- flutter_core ------------------------------
 import 'package:flutter/material.dart';
+//----------------------------------------------------------------------
 
 class AppState extends ChangeNotifier {
   String _userType = 'doctor'; // Default value
