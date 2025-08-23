@@ -12,6 +12,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:google_sign_in/google_sign_in.dart' as gsi;
 import 'package:media_mate/theme/colors.dart';
+import 'package:media_mate/widgets/editable_field.dart';
 //----------------------------------------------------------------------
 
 //-------------------------- state_management --------------------------
@@ -743,19 +744,19 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 const SizedBox(height: 18),
 
                 // Fields
-                _Field(
+                Field(
                   label: 'Age',
                   value: _ageText(),
                   editable: true,
                   onTap: _editAgeViaDob,
                 ),
-                _Field(
+                Field(
                   label: 'Gender',
                   value: _normalizedGender((_userDoc?['gender'] as String?)),
                   editable: true,
                   onTap: _editGender,
                 ),
-                _Field(
+                Field(
                   label: 'Phone',
                   value: (_userDoc?['phone_number'] as String?) ?? '',
                   editable: true,
@@ -768,10 +769,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     );
                   },
                 ),
-                _Field(label: 'Email Address', value: _email),
+                Field(label: 'Email Address', value: _email),
 
                 if (role == 'patient') ...[
-                  _Field(
+                  Field(
                     label: 'Assigned Doctor',
                     value:
                         (((_roleDoc?['assigned_doctor_name'] as String?) ?? '')
@@ -788,7 +789,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   ),
                   const SizedBox(height: 10),
                 ] else if (role == 'doctor') ...[
-                  _Field(
+                  Field(
                     label: 'Specialty',
                     value: (_roleDoc?['specialty'] as String?) ?? 'Not set',
                     editable: true,
@@ -825,73 +826,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
 }
 
 //--------------------------- custom_widgets ---------------------------
-
-// custom widget that displays (label, value, optional: edit icon)
-class _Field extends StatelessWidget {
-  const _Field({
-    required this.label,
-    required this.value,
-    this.onTap,
-    this.editable = false,
-  });
-
-  final String label;
-  final String value;
-  final VoidCallback? onTap;
-  final bool editable;
-
-  @override
-  Widget build(BuildContext context) {
-    const borderColor = Color(0xFF7A7B82);
-    return InkWell(
-      onTap: onTap,
-      child: Container(
-        height: 44,
-        margin: const EdgeInsets.only(bottom: 12),
-        padding: const EdgeInsets.symmetric(horizontal: 12),
-        decoration: BoxDecoration(
-          color: AppColors.surface,
-          border: Border.all(color: borderColor),
-          borderRadius: BorderRadius.circular(5),
-        ),
-        child: Row(
-          children: [
-            Expanded(
-              child: Text(
-                label,
-                style: GoogleFonts.inter(
-                  fontSize: 14,
-                  fontWeight: FontWeight.w600,
-                ),
-              ),
-            ),
-            Flexible(
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  Flexible(
-                    child: Text(
-                      value.isEmpty ? '—' : value,
-                      textAlign: TextAlign.right,
-                      overflow: TextOverflow.ellipsis,
-                      style: GoogleFonts.inter(
-                        color: const Color(0xFF7A7B82),
-                        fontSize: 13,
-                      ),
-                    ),
-                  ),
-                  if (editable) const SizedBox(width: 6),
-                  if (editable)
-                    const Icon(Icons.edit, size: 16, color: Color(0xFF7A7B82)),
-                ],
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
 
 // custom button widget.
 class _OutlinedAction extends StatelessWidget {

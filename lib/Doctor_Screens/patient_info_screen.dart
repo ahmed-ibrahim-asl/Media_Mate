@@ -585,38 +585,6 @@ class _PatientInfoScreenState extends State<PatientInfoScreen> {
           (_) => _AddMedicineDialog(collection: medsCol, patientId: patientId),
     );
   }
-
-  void _showMedDetailsDialog(BuildContext context, Map<String, dynamic> m) {
-    final dose = _composeDoseFromDoc(m);
-    final times = _formatTimes(m['times'] as List<dynamic>?);
-    final longTerm = m['long_term'] == true;
-    final start = _dateOnly(m['start_date']);
-    final end = _dateOnly(m['end_date']);
-    showDialog<void>(
-      context: context,
-      builder:
-          (_) => AlertDialog(
-            title: Text((m['name'] ?? 'Medication').toString()),
-            content: Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                if (dose.isNotEmpty) Text('Dose: $dose'),
-                if (times.isNotEmpty) Text('Times: $times'),
-                Text(longTerm ? 'Long-term' : 'From $start to $end'),
-                if ((m['instruction'] ?? '').toString().isNotEmpty)
-                  Text('Instruction: ${m['instruction']}'),
-              ],
-            ),
-            actions: [
-              TextButton(
-                onPressed: () => Navigator.pop(context),
-                child: const Text('Close'),
-              ),
-            ],
-          ),
-    );
-  }
 }
 
 /// ================= Edit Medicine Dialog (Doctor) =================

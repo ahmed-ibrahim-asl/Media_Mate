@@ -82,7 +82,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
   BoxDecoration get _cardDecoration => BoxDecoration(
     color: AppColors.surface,
     borderRadius: BorderRadius.circular(14),
-    border: Border.all(color: _border.withOpacity(0.25)),
+    border: Border.all(color: _border.withValues(alpha: 0.25)),
     boxShadow: const [
       BoxShadow(color: Color(0x14000000), blurRadius: 10, offset: Offset(0, 4)),
     ],
@@ -136,7 +136,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
       children: [
         CircleAvatar(
           radius: 22,
-          backgroundColor: AppColors.primary.withOpacity(.1),
+          backgroundColor: AppColors.primary.withValues(alpha: .1),
           child: Icon(leading, color: AppColors.primary),
         ),
         const SizedBox(width: 12),
@@ -375,10 +375,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   child: Container(
                     padding: const EdgeInsets.fromLTRB(16, 16, 16, 18),
                     decoration: BoxDecoration(
-                      color: AppColors.surface.withOpacity(.55),
+                      color: AppColors.surface.withValues(alpha: .55),
                       borderRadius: BorderRadius.circular(16),
                       border: Border.all(
-                        color: AppColors.surface.withOpacity(.6),
+                        color: AppColors.surface.withValues(alpha: .6),
                       ),
                     ),
                     child: Row(

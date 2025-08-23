@@ -9,7 +9,7 @@ import 'package:provider/provider.dart';
 
 //----------------------------- app_local ------------------------------
 import '/app_state.dart';
-import '/authentication/signIn_screen.dart'; // for SignInScreenWidget.routePath
+import 'sign_in_screen.dart'; // for SignInScreenWidget.routePath
 import 'package:media_mate/theme/colors.dart';
 //----------------------------------------------------------------------
 

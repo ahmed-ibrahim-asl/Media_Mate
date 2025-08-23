@@ -250,12 +250,13 @@ class _HomeDoctorScreenWidgetState extends State<HomeDoctorScreenWidget> {
                         separatorBuilder: (_, __) => const SizedBox(height: 12),
                         itemBuilder: (context, i) {
                           final p = items[i];
+
                           return Container(
                             height: 110,
                             decoration: BoxDecoration(
                               color: AppColors.surface,
                               borderRadius: BorderRadius.circular(12),
-                              boxShadow: const [
+                              boxShadow: [
                                 BoxShadow(
                                   color: AppColors.cardShadow,
                                   blurRadius: 4,
